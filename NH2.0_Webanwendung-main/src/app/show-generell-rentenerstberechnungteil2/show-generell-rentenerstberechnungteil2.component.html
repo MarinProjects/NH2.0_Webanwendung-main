@@ -1,0 +1,12 @@
+<div>
+  <button (click)="addingRentenerstberechnungteil2()" class="add-button">
+     Rentenerstberechnung Teil 2 für {{ this.personName }} mit Personalnummer {{this.personalnummer}} hinzufügen
+  </button>
+</div>
+
+<button (click)="navigateToPersonDetail()">Zurück zur Personenübersicht</button>
+
+<div *ngFor="let rentenerstberechnungteil2 of rentenerstberechnungteil2List" (dblclick)="viewRentenerstberechnungteil2Detail(rentenerstberechnungteil2._id)">
+    <p>betrRente: {{ rentenerstberechnungteil2.betrRente }}</p>
+  </div>
+  

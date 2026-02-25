@@ -1,0 +1,197 @@
+<div class="daten-bzgl-der-laufenden-rente-details">
+    <h2>Daten bzgl. der laufenden Rente anzeigen</h2>
+    <table class="person-table">
+      <!-- Display fields -->
+      <tr>
+        <th>gueltigVon</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.gueltigVon }}</span>
+          <input *ngIf="editMode" type="date" [(ngModel)]="datenBzglDerLaufendenRente.gueltigVon">
+        </td>
+      </tr>
+
+      <tr>
+        <th>gueltigBis</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.gueltigBis }}</span>
+          <input *ngIf="editMode" type="date" [(ngModel)]="datenBzglDerLaufendenRente.gueltigBis">
+        </td>
+      </tr>
+
+      <tr>
+        <th>eingabedatum</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.eingabedatum }}</span>
+          <input *ngIf="editMode" type="date" [(ngModel)]="datenBzglDerLaufendenRente.eingabedatum">
+        </td>
+      </tr>
+      
+
+      <tr>
+        <th>gesamtversorgung</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.gesamtversorgung }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.gesamtversorgung">
+        </td>
+      </tr>
+
+      <tr>
+        <th>andereAnzurechnendeRente</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.andereAnzurechnendeRente }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.andereAnzurechnendeRente">
+        </td>
+      </tr>
+
+      <tr>
+        <th>andereAnzurechnendeRenteName</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.andereAnzurechnendeRenteName }}</span>
+          <input *ngIf="editMode" type="text" [(ngModel)]="datenBzglDerLaufendenRente.andereAnzurechnendeRenteName">
+        </td>
+      </tr>
+
+      <tr>
+        <th>gesetzlicheSVRente</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.gesetzlicheSVRente }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.gesetzlicheSVRente">
+        </td>
+      </tr>
+
+      <tr>
+        <th>renteAusBefrLebensvers</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.renteAusBefrLebensvers }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.renteAusBefrLebensvers">
+        </td>
+      </tr>
+
+      <tr>
+        <th>zusatzrente</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.zusatzrente }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.zusatzrente">
+        </td>
+      </tr>
+
+      <tr>
+        <th>zusatzrenteName</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.zusatzrenteName }}</span>
+          <input *ngIf="editMode" type="text" [(ngModel)]="datenBzglDerLaufendenRente.zusatzrenteName">
+        </td>
+      </tr>
+
+      <tr>
+        <th>pension</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.pension }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.pension">
+        </td>
+      </tr>
+
+      <tr>
+        <th>ausgleich</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.ausgleich }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.ausgleich">
+        </td>
+      </tr>
+
+      <tr>
+        <th>betrRente</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.betrRente }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.betrRente">
+        </td>
+      </tr>
+
+      <tr>
+        <th>bezugsart</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.bezugsart }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.bezugsart">
+        </td>
+      </tr>
+
+      <tr>
+        <th>weitereRenteUnterPersNr</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.weitereRenteUnterPersNr }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.weitereRenteUnterPersNr">
+        </td>
+      </tr>
+
+      <tr>
+        <th>anzahlKinder</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.anzahlKinder }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.anzahlKinder">
+        </td>
+      </tr>
+
+      <tr>
+        <th>entgeltpunkte</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.entgeltpunkte }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.entgeltpunkte">
+        </td>
+      </tr>
+
+      <tr>
+        <th>steuerklasse</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.steuerklasse }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.steuerklasse">
+        </td>
+      </tr>
+
+      <tr>
+        <th>zugangsfaktor</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.zugangsfaktor }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.zugangsfaktor">
+        </td>
+      </tr>
+
+      <tr>
+        <th>krankenkassenkennziffer</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.krankenkassenkennziffer }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.krankenkassenkennziffer">
+        </td>
+      </tr>
+
+      <tr>
+        <th>beitragFuerKrankenvers</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.beitragFuerKrankenvers }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.beitragFuerKrankenvers">
+        </td>
+      </tr>
+
+      <tr>
+        <th>rentenartfaktor</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.rentenartfaktor }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.rentenartfaktor">
+        </td>
+      </tr>
+
+      <tr>
+        <th>teilrentenfaktor</th>
+        <td>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.teilrentenfaktor }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="datenBzglDerLaufendenRente.teilrentenfaktor">
+        </td>
+      </tr>
+
+      <!-- Add similar blocks for other fields -->
+    </table>
+    <button *ngIf="!editMode" (click)="toggleEditMode()">Edit Details</button>
+    <button *ngIf="editMode" (click)="saveChanges()">Save Changes</button>
+    <button (click)="deleteDatenBzglDerLaufendenRente()">Daten bzgl der laufenden Rente löschen</button>
+    <button (click)="navigateToPersonDetail()">Zurück zu Stammdatenbereich</button>
+  </div>
+

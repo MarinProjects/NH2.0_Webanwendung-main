@@ -1,0 +1,25 @@
+<div>
+  <button (click)="addpensionsDaten()" class="add-button">
+     Pensionsdaten für {{ this.personName }} mit Personalnummer {{this.personalnummer}} hinzufügen
+  </button>
+</div>
+
+<button (click)="navigateToPersonDetail()">Zurück zu Stammdatenbereich</button>
+
+<div class="pensions-daten-list">
+    <h2>List of Pension Data</h2>
+    <table class="person-table">
+      <thead>
+        <tr>
+          <th>Ratierlicher Anspruch</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of pensionsDatenList" (dblclick)="navigateToDetail(data._id)">
+          <td>{{ data.ratierlicherAnspruch }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  

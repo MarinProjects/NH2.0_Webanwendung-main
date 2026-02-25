@@ -1,0 +1,6 @@
+Webanwendung starten
+
+npm install -g @angular/cli 
+cd Pfad/zum/projekt
+npm install 
+ng serve

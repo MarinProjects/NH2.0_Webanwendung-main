@@ -1,0 +1,14 @@
+<div>
+  <button (click)="addehegattenDaten()" class="add-button">
+     Ehegatten Daten für {{ this.personName }} mit Personalnummer {{this.personalnummer}} hinzufügen
+  </button>
+</div>
+
+<button (click)="navigateToPersonDetail()">Zurück zu Stammdatenbereich</button>
+
+<div *ngFor="let ehegattenDaten of ehegattenDatenList" (dblclick)="viewEhegattenDatenDetail(ehegattenDaten._id)">
+    <p>Name: {{ ehegattenDaten.name }}</p>
+  </div>
+
+
+  

@@ -1,0 +1,23 @@
+<div class="form-container">
+    <h2 class="form-title">Neue Datenerfassung Ehegatten Daten</h2>
+  
+    <form #ehegattenDatenForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" id="name" name="name" class="form-input" [(ngModel)]="formData.name">
+      </div>
+  
+      <div class="form-group">
+        <label for="geburtsdatum" class="form-label">Geburtsdatum</label>
+        <input type="date" id="geburtsdatum" name="geburtsdatum" class="form-input" [(ngModel)]="formData.geburtsdatum">
+      </div>
+  
+      <div class="form-group">
+        <label for="prozentsatzWitwenWitwerrente" class="form-label">Prozentsatz Witwen-/Witwerrente</label>
+        <input type="number" id="prozentsatzWitwenWitwerrente" name="prozentsatzWitwenWitwerrente" class="form-input" [(ngModel)]="formData.prozentsatzWitwenWitwerrente">
+      </div>
+  
+      <button type="submit" class="form-submit">Speichern</button>
+    </form>
+  </div>
+  

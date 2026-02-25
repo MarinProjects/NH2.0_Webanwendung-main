@@ -1,0 +1,68 @@
+<div class="form-container">
+    <h2 class="form-title">Neue Heimat 2.0 Datenerfassung Renten Erstberechnung Teil 1</h2>
+  
+    <form #rentenErstberechnungTeil1Form="ngForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="pensionsfaehigesMonatsgehalt" class="form-label">Pensionsfähiges Monatsgehalt</label>
+        <input type="number" id="pensionsfaehigesMonatsgehalt" name="pensionsfaehigesMonatsgehalt" class="form-input" [(ngModel)]="formData.pensionsfaehigesMonatsgehalt">
+      </div>
+  
+      <div class="form-group">
+        <label for="sozVersPflJahresgehaltRB" class="form-label">Sozialversicherungspflichtiges Jahresgehalt RB</label>
+        <input type="number" id="sozVersPflJahresgehaltRB" name="sozVersPflJahresgehaltRB" class="form-input" [(ngModel)]="formData.sozVersPflJahresgehaltRB">
+      </div>
+  
+      <div class="form-group">
+        <label for="ruhegeldfaehigesDurchschnittsgehalt" class="form-label">Ruhegeldfähiges Durchschnittsgehalt</label>
+        <input type="number" id="ruhegeldfaehigesDurchschnittsgehalt" name="ruhegeldfaehigesDurchschnittsgehalt" class="form-input" [(ngModel)]="formData.ruhegeldfaehigesDurchschnittsgehalt">
+      </div>
+  
+      <div class="form-group">
+        <label for="durchschnittsgehaltNachSozialplan" class="form-label">Durchschnittsgehalt nach Sozialplan</label>
+        <input type="number" id="durchschnittsgehaltNachSozialplan" name="durchschnittsgehaltNachSozialplan" class="form-input" [(ngModel)]="formData.durchschnittsgehaltNachSozialplan">
+      </div>
+  
+      <div class="form-group">
+        <label for="teilzeitgrad" class="form-label">Teilzeitgrad</label>
+        <input type="number" id="teilzeitgrad" name="teilzeitgrad" class="form-input" [(ngModel)]="formData.teilzeitgrad">
+      </div>
+  
+      <div class="form-group">
+        <label for="sozVersFreieJahreAb20" class="form-label">Sozialversicherungsfreie Jahre ab 20</label>
+        <input type="number" id="sozVersFreieJahreAb20" name="sozVersFreieJahreAb20" class="form-input" [(ngModel)]="formData.sozVersFreieJahreAb20">
+      </div>
+  
+      <div class="form-group">
+        <label for="schwerbehindert" class="form-label">Schwerbehindert</label>
+        <input type="text" id="schwerbehindert" name="schwerbehindert" class="form-input" [(ngModel)]="formData.schwerbehindert">
+      </div>
+  
+      <div class="form-group">
+        <label for="versorgungsausgleichDurchgefuehrt" class="form-label">Versorgungsausgleich durchgeführt</label>
+        <input type="text" id="versorgungsausgleichDurchgefuehrt" name="versorgungsausgleichDurchgefuehrt" class="form-input" [(ngModel)]="formData.versorgungsausgleichDurchgefuehrt">
+      </div>
+  
+      <div class="form-group">
+        <label for="entgeltpunkte" class="form-label">Entgeltpunkte</label>
+        <input type="number" id="entgeltpunkte" name="entgeltpunkte" class="form-input" [(ngModel)]="formData.entgeltpunkte">
+      </div>
+  
+      <div class="form-group">
+        <label for="zugangsfaktor" class="form-label">Zugangsfaktor</label>
+        <input type="number" id="zugangsfaktor" name="zugangsfaktor" class="form-input" [(ngModel)]="formData.zugangsfaktor">
+      </div>
+  
+      <div class="form-group">
+        <label for="rentenartfaktor" class="form-label">Rentenartfaktor</label>
+        <input type="number" id="rentenartfaktor" name="rentenartfaktor" class="form-input" [(ngModel)]="formData.rentenartfaktor">
+      </div>
+  
+      <div class="form-group">
+        <label for="teilrentenfaktor" class="form-label">Teilrentenfaktor</label>
+        <input type="number" id="teilrentenfaktor" name="teilrentenfaktor" class="form-input" [(ngModel)]="formData.teilrentenfaktor">
+      </div>
+  
+      <button type="submit" class="form-submit">Speichern</button>
+    </form>
+  </div>
+  

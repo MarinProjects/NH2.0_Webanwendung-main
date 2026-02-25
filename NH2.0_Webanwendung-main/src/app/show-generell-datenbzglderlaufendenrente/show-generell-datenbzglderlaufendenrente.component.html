@@ -1,0 +1,13 @@
+<div>
+  <button (click)="addingdatenbzglderlaufendenrente()" class="add-button">
+     Daten bzgl der laufenden Rente für {{ this.personName }} mit Personalnummer {{this.personalnummer}} hinzufügen
+  </button>
+</div>
+
+<button (click)="navigateToPersonDetail()">Zurück zu Stammdatenbereich</button>
+
+<div *ngFor="let datenbzglderlaufendenRente of datenbzglderlaufendenRenteList" (dblclick)="viewDatenbzglderlaufendenRenteDetail(datenbzglderlaufendenRente._id)">
+    <p>Gültig Ab: {{ datenbzglderlaufendenRente.gueltigVon
+    }}</p>
+  </div>
+  

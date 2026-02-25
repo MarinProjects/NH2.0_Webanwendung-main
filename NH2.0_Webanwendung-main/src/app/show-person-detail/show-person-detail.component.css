@@ -1,0 +1,101 @@
+.person-details {
+    margin-top: 20px;
+  }
+  
+  .person-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .person-table th, .person-table td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .person-table th {
+    text-align: left;
+    background-color: #f2f2f2;
+  }
+  
+  .person-details {
+    width: 50%;
+    margin: auto;
+  }
+
+  .person-table {
+    width: 80%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    font-size: 18px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .even-row {
+    background-color: #f9f9f9; /* Grey background for even rows */
+  }
+  
+  .odd-row {
+    background-color: #ffffff; /* White background for odd rows */
+  }
+  
+  .edit-button, .save-button {
+    margin-top: 16px;
+    padding: 8px 16px;
+    background-color: #007bff; /* Blue button color */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .edit-button:hover, .save-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  .edit-input {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  button {
+    outline: none;
+  }
+  
+  .button-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  .add-button {
+    background-color: rgb(88, 88, 214); /* Default grey background */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  .button-blue {
+    background-color: #1b4572; /* Blue background */
+  }
+
+  .button-grey {
+    background-color: grey; /* Blue background */
+  }

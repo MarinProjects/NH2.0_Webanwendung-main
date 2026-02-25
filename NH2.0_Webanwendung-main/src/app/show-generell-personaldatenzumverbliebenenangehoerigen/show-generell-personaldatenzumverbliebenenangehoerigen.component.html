@@ -1,0 +1,13 @@
+<div>
+  <button (click)="addpersonaldatenzumverbliebenenangehoerigen()" class="add-button">
+     Personaldaten zum verbliebenen Angehörigen für {{ this.personName }} mit Personalnummer {{this.personalnummer}} hinzufügen
+  </button>
+</div>
+
+<button (click)="navigateToPersonDetail()">Zurück zu Stammdatenbereich</button>
+
+<div *ngFor="let personaldaten of personaldatenZumVerbliebenenAngehoerigenList" (dblclick)="navigateToDetail(personaldaten._id)">
+    <p>{{ personaldaten.name }}</p>
+  </div>
+  
+  

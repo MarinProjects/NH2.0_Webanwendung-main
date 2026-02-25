@@ -1,0 +1,111 @@
+<div class="renten-erstberechnung-teil2-details">
+    <h2>Renten Erstberechnung Teil 2 Daten Ansehen</h2>
+    <table>
+        <!-- Display fields -->
+        <!-- Add similar blocks for other fields -->
+
+        <tr>
+            <th>gesamtversorgung</th>
+            <td>
+              <span *ngIf="!editMode">{{ rentenErstberechnungTeil2Daten.gesamtversorgung }}</span>
+              <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil2Daten.gesamtversorgung">
+            </td>
+          </tr>
+
+          <tr>
+            <th>gesetzlicheSVRente</th>
+            <td>
+              <span *ngIf="!editMode">{{ rentenErstberechnungTeil2Daten.gesetzlicheSVRente }}</span>
+              <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil2Daten.gesetzlicheSVRente">
+            </td>
+          </tr>
+
+          <tr>
+            <th>renteAusBefrLebensvers</th>
+            <td>
+              <span *ngIf="!editMode">{{ rentenErstberechnungTeil2Daten.renteAusBefrLebensvers }}</span>
+              <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil2Daten.renteAusBefrLebensvers">
+            </td>
+          </tr>
+
+          <tr>
+            <th>andereAnzurechnRente</th>
+            <td>
+              <span *ngIf="!editMode">{{ rentenErstberechnungTeil2Daten.andereAnzurechnRente }}</span>
+              <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil2Daten.andereAnzurechnRente">
+            </td>
+          </tr>
+
+          <tr>
+            <th>abschlag</th>
+            <td>
+              <span *ngIf="!editMode">{{ rentenErstberechnungTeil2Daten.abschlag }}</span>
+              <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil2Daten.abschlag">
+            </td>
+          </tr>
+
+          <tr>
+            <th>zusatzrente</th>
+            <td>
+              <span *ngIf="!editMode">{{ rentenErstberechnungTeil2Daten.zusatzrente }}</span>
+              <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil2Daten.zusatzrente">
+            </td>
+          </tr>
+
+          <tr>
+            <th>ratierlicherAnspruch</th>
+            <td>
+              <span *ngIf="!editMode">{{ rentenErstberechnungTeil2Daten.ratierlicherAnspruch }}</span>
+              <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil2Daten.ratierlicherAnspruch">
+            </td>
+          </tr>
+
+          <tr>
+            <th>anteil</th>
+            <td>
+              <span *ngIf="!editMode">{{ rentenErstberechnungTeil2Daten.anteil }}</span>
+              <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil2Daten.anteil">
+            </td>
+          </tr>
+
+          <tr>
+            <th>pension</th>
+            <td>
+              <span *ngIf="!editMode">{{ rentenErstberechnungTeil2Daten.pension }}</span>
+              <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil2Daten.pension">
+            </td>
+          </tr>
+
+          <tr>
+            <th>ausgleich</th>
+            <td>
+              <span *ngIf="!editMode">{{ rentenErstberechnungTeil2Daten.ausgleich }}</span>
+              <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil2Daten.ausgleich">
+            </td>
+          </tr>
+
+          <tr>
+            <th>betrRente</th>
+            <td>
+              <span *ngIf="!editMode">{{ rentenErstberechnungTeil2Daten.betrRente }}</span>
+              <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil2Daten.betrRente">
+            </td>
+          </tr>
+
+          <tr>
+            <th>anpassungsschluessel</th>
+            <td>
+              <span *ngIf="!editMode">{{ rentenErstberechnungTeil2Daten.anpassungsschluessel }}</span>
+              <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil2Daten.anpassungsschluessel">
+            </td>
+          </tr>
+
+          
+
+
+    </table>
+    <button *ngIf="!editMode" (click)="toggleEditMode()">Edit Details</button>
+    <button *ngIf="editMode" (click)="saveChanges()">Save Changes</button>
+    <button (click)="deleteRentenerstberechnungteil2()">Daten zu Rentenerstberechnungteil2 löschen</button>
+    <button (click)="navigateToPersonDetail()">Zurück zu Stammdatenbereich</button>
+</div>

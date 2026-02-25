@@ -1,0 +1,45 @@
+<div class="container">
+  <h2>Anpassung der Renten für Rentner mit Versorgungsordnung: [71, 61, 75, 65, 76, 66, 77, 67, 78, 68, 82, 86, 90]</h2>
+  <form [formGroup]="adjustmentForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="dateOnAdjustmentOccurs">Datum an dem die Anpassung in Kraft tritt</label>
+      <input type="date" id="dateOnAdjustmentOccurs" class="form-control" formControlName="dateOnAdjustmentOccurs">
+    </div>
+  
+    <div class="form-group">
+      <label for="monatlicheMindestrente">Monatliche Mindestrente</label>
+      <input type="number" id="monatlicheMindestrente" class="form-control" formControlName="monatlicheMindestrente">
+    </div>
+  
+    <div class="form-group">
+      <label for="lebensunterhaltungskosteindizesInPct">Lebensunterhaltungskosteindizes in %</label>
+      <input type="number" id="lebensunterhaltungskosteindizesInPct" class="form-control" formControlName="lebensunterhaltungskosteindizesInPct">
+    </div>
+  
+    <div class="form-group">
+      <label for="steigungssatzInDerWohnungswirtschaftInPct">Steigungssatz in der Wohnungsiwrtschaft in %</label>
+      <input type="number" id="steigungssatzInDerWohnungswirtschaftInPct" class="form-control" formControlName="steigungssatzInDerWohnungswirtschaftInPct">
+    </div>
+
+
+    <div class="form-group">
+      <label for="beitragsbemessungsgrenze">Beitragsbemessungsgrenze</label>
+      <input type="number" id="beitragsbemessungsgrenze" class="form-control" formControlName="beitragsbemessungsgrenze">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Anpassung durchführen</button>
+  </form>
+</div>
+
+<div *ngIf="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+  Pensionsverordnung Anpassungen erfolgreich durchgeführt
+  <button type="button" class="close" aria-label="Close" (click)="closeAlert()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<button type="button" (click)="navigateToPersonList()">Zurück zur Personenübersicht</button>
+<button type="button" id="createLetterButton" (click)="promptForAdjustmentDetails()">Create Letter</button>
+
+
+  

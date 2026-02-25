@@ -1,0 +1,61 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+  }
+  
+  .add-button {
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .search-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  #searchPersonalnummer {
+    padding: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 16px;
+  }
+  
+  .search-button {
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .person-table {
+    width: 80%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    font-size: 18px;
+  }
+  
+  .person-table th,
+  .person-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .person-table th {
+    background-color: #f2f2f2;
+  }
+  

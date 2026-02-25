@@ -1,0 +1,127 @@
+<div class="form-container">
+  <h2 class="form-title">Neue Datenerfassung bzgl. der laufenden Rente</h2>
+
+  <form #datenBzglDerLaufendenRenteForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="gueltigVon" class="form-label">Gültig von</label>
+      <input type="date" id="gueltigVon" name="gueltigVon" class="form-input" [(ngModel)]="formData.gueltigVon">
+    </div>
+
+    <div class="form-group">
+      <label for="gueltigBis" class="form-label">Gültig bis</label>
+      <input type="date" id="gueltigBis" name="gueltigBis" class="form-input" [(ngModel)]="formData.gueltigBis">
+    </div>
+
+    <div class="form-group">
+      <label for="eingabedatum" class="form-label">Eingabedatum</label>
+      <input type="date" id="eingabedatum" name="eingabedatum" class="form-input" [(ngModel)]="formData.eingabedatum">
+    </div>
+
+    <div class="form-group">
+      <label for="gesamtversorgung" class="form-label">Gesamtversorgung</label>
+      <input type="number" id="gesamtversorgung" name="gesamtversorgung" class="form-input" [(ngModel)]="formData.gesamtversorgung">
+    </div>
+
+    <div class="form-group">
+      <label for="andereAnzurechnendeRente" class="form-label">Andere anzurechnende Rente</label>
+      <input type="number" id="andereAnzurechnendeRente" name="andereAnzurechnendeRente" class="form-input" [(ngModel)]="formData.andereAnzurechnendeRente">
+    </div>
+
+    <div class="form-group">
+      <label for="andereAnzurechnendeRenteName" class="form-label">Andere anzurechnende Rente Name</label>
+      <input type="text" id="andereAnzurechnendeRenteName" name="andereAnzurechnendeRenteName" class="form-input" [(ngModel)]="formData.andereAnzurechnendeRenteName">
+    </div>
+
+    <div class="form-group">
+      <label for="gesetzlicheSVRente" class="form-label">Gesetzliche SV-Rente</label>
+      <input type="number" id="gesetzlicheSVRente" name="gesetzlicheSVRente" class="form-input" [(ngModel)]="formData.gesetzlicheSVRente">
+    </div>
+
+    <div class="form-group">
+      <label for="renteAusBefrLebensvers" class="form-label">Rente aus befriesteter Lebensversicherung</label>
+      <input type="number" id="renteAusBefrLebensvers" name="renteAusBefrLebensvers" class="form-input" [(ngModel)]="formData.renteAusBefrLebensvers">
+    </div>
+
+    <div class="form-group">
+      <label for="zusatzrente" class="form-label">Zusatzrente</label>
+      <input type="number" id="zusatzrente" name="zusatzrente" class="form-input" [(ngModel)]="formData.zusatzrente">
+    </div>
+
+    <div class="form-group">
+      <label for="zusatzrenteName" class="form-label">Zusatzrente Name</label>
+      <input type="text" id="zusatzrenteName" name="zusatzrenteName" class="form-input" [(ngModel)]="formData.zusatzrenteName">
+    </div>
+
+    <div class="form-group">
+      <label for="pension" class="form-label">Pension</label>
+      <input type="number" id="pension" name="pension" class="form-input" [(ngModel)]="formData.pension">
+    </div>
+
+    <div class="form-group">
+      <label for="ausgleich" class="form-label">Ausgleich</label>
+      <input type="number" id="ausgleich" name="ausgleich" class="form-input" [(ngModel)]="formData.ausgleich">
+    </div>
+
+    <div class="form-group">
+      <label for="betrRente" class="form-label">Betr. Rente</label>
+      <input type="number" id="betrRente" name="betrRente" class="form-input" [(ngModel)]="formData.betrRente">
+    </div>
+
+    <div class="form-group">
+      <label for="bezugsart" class="form-label">Bezugsart</label>
+      <input type="number" id="bezugsart" name="bezugsart" class="form-input" [(ngModel)]="formData.bezugsart">
+    </div>
+
+    <div class="form-group">
+      <label for="anpassungsschluessel" class="form-label">Anpassungsschlüssel</label>
+      <input type="number" id="anpassungsschluessel" name="anpassungsschluessel" class="form-input" [(ngModel)]="formData.anpassungsschluessel">
+    </div>
+
+    <div class="form-group">
+      <label for="weitereRenteUnterPersNr" class="form-label">Weitere Rente unter Pers.-Nr.</label>
+      <input type="number" id="weitereRenteUnterPersNr" name="weitereRenteUnterPersNr" class="form-input" [(ngModel)]="formData.weitereRenteUnterPersNr">
+    </div>
+
+    <div class="form-group">
+      <label for="anzahlKinder" class="form-label">Anzahl Kinder</label>
+      <input type="number" id="anzahlKinder" name="anzahlKinder" class="form-input" [(ngModel)]="formData.anzahlKinder">
+    </div>
+
+    <div class="form-group">
+      <label for="entgeltpunkte" class="form-label">Entgeltpunkte</label>
+      <input type="number" id="entgeltpunkte" name="entgeltpunkte" class="form-input" [(ngModel)]="formData.entgeltpunkte">
+    </div>
+
+    <div class="form-group">
+      <label for="steuerklasse" class="form-label">Steuerklasse</label>
+      <input type="number" id="steuerklasse" name="steuerklasse" class="form-input" [(ngModel)]="formData.steuerklasse">
+    </div>
+
+    <div class="form-group">
+      <label for="zugangsfaktor" class="form-label">Zugangsfaktor</label>
+      <input type="number" id="zugangsfaktor" name="zugangsfaktor" class="form-input" [(ngModel)]="formData.zugangsfaktor">
+    </div>
+
+    <div class="form-group">
+      <label for="krankenkassenkennziffer" class="form-label">Krankenkassenkennziffer</label>
+      <input type="number" id="krankenkassenkennziffer" name="krankenkassenkennziffer" class="form-input" [(ngModel)]="formData.krankenkassenkennziffer">
+    </div>
+
+    <div class="form-group">
+      <label for="beitragFuerKrankenvers" class="form-label">Beitrag für Krankenversicherung</label>
+      <input type="number" id="beitragFuerKrankenvers" name="beitragFuerKrankenvers" class="form-input" [(ngModel)]="formData.beitragFuerKrankenvers">
+    </div>
+
+    <div class="form-group">
+      <label for="rentenartfaktor" class="form-label">Rentenartfaktor</label>
+      <input type="number" id="rentenartfaktor" name="rentenartfaktor" class="form-input" [(ngModel)]="formData.rentenartfaktor">
+    </div>
+
+    <div class="form-group">
+      <label for="teilrentenfaktor" class="form-label">Teilrentenfaktor</label>
+      <input type="number" id="teilrentenfaktor" name="teilrentenfaktor" class="form-input" [(ngModel)]="formData.teilrentenfaktor">
+    </div>
+
+    <button type="submit" class="form-submit">Speichern</button>
+  </form>
+</div>

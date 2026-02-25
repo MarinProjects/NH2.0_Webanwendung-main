@@ -1,0 +1,131 @@
+<div class="renten-erstberechnung-teil1-details">
+    <h2>Renten Erstberechnung Teil 1 Daten Ansehen</h2>
+    <table class="person-table">
+      <!-- Display fields -->
+      <tr>
+        <th>pensionsfaehigesMonatsgehalt</th>
+        <td>
+          <span *ngIf="!editMode">{{ rentenErstberechnungTeil1Daten.pensionsfaehigesMonatsgehalt }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil1Daten.pensionsfaehigesMonatsgehalt">
+        </td>
+      </tr>
+
+      
+      <tr>
+        <th>sozVersPflJahresgehaltRB</th>
+        <td>
+          <span *ngIf="!editMode">{{ rentenErstberechnungTeil1Daten.sozVersPflJahresgehaltRB }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil1Daten.sozVersPflJahresgehaltRB">
+        </td>
+      </tr>
+
+      
+
+      <tr>
+        <th>ruhegeldfaehigesDurchschnittsgehalt</th>
+        <td>
+          <span *ngIf="!editMode">{{ rentenErstberechnungTeil1Daten.ruhegeldfaehigesDurchschnittsgehalt }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil1Daten.ruhegeldfaehigesDurchschnittsgehalt">
+        </td>
+      </tr>
+
+      
+
+      <tr>
+        <th>durchschnittsgehaltNachSozialplan</th>
+        <td>
+          <span *ngIf="!editMode">{{ rentenErstberechnungTeil1Daten.durchschnittsgehaltNachSozialplan }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil1Daten.durchschnittsgehaltNachSozialplan">
+        </td>
+      </tr>
+
+      
+
+      <tr>
+        <th>teilzeitgrad</th>
+        <td>
+          <span *ngIf="!editMode">{{ rentenErstberechnungTeil1Daten.teilzeitgrad }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil1Daten.teilzeitgrad">
+        </td>
+      </tr>
+
+      
+
+      <tr>
+        <th>sozVersFreieJahreAb20</th>
+        <td>
+          <span *ngIf="!editMode">{{ rentenErstberechnungTeil1Daten.sozVersFreieJahreAb20 }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil1Daten.sozVersFreieJahreAb20">
+        </td>
+      </tr>
+
+      
+
+      <tr>
+        <th>schwerbehindert</th>
+        <td>
+          <span *ngIf="!editMode">{{ rentenErstberechnungTeil1Daten.schwerbehindert }}</span>
+          <input *ngIf="editMode" type="text" [(ngModel)]="rentenErstberechnungTeil1Daten.schwerbehindert">
+        </td>
+      </tr>
+
+      
+
+      <tr>
+        <th>versorgungsausgleichDurchgefuehrt</th>
+        <td>
+          <span *ngIf="!editMode">{{ rentenErstberechnungTeil1Daten.versorgungsausgleichDurchgefuehrt }}</span>
+          <input *ngIf="editMode" type="text" [(ngModel)]="rentenErstberechnungTeil1Daten.versorgungsausgleichDurchgefuehrt">
+        </td>
+      </tr>
+
+      
+
+      <tr>
+        <th>entgeltpunkte</th>
+        <td>
+          <span *ngIf="!editMode">{{ rentenErstberechnungTeil1Daten.entgeltpunkte }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil1Daten.entgeltpunkte">
+        </td>
+      </tr>
+
+      
+
+      <tr>
+        <th>zugangsfaktor</th>
+        <td>
+          <span *ngIf="!editMode">{{ rentenErstberechnungTeil1Daten.zugangsfaktor }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil1Daten.zugangsfaktor">
+        </td>
+      </tr>
+
+      
+
+      <tr>
+        <th>rentenartfaktor</th>
+        <td>
+          <span *ngIf="!editMode">{{ rentenErstberechnungTeil1Daten.rentenartfaktor }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil1Daten.rentenartfaktor">
+        </td>
+      </tr>
+      
+
+      <tr>
+        <th>teilrentenfaktor</th>
+        <td>
+          <span *ngIf="!editMode">{{ rentenErstberechnungTeil1Daten.teilrentenfaktor }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="rentenErstberechnungTeil1Daten.teilrentenfaktor">
+        </td>
+      </tr>
+
+
+
+      
+
+      <!-- Add similar blocks for other fields -->
+    </table>
+    <button *ngIf="!editMode" (click)="toggleEditMode()">Edit Details</button>
+    <button *ngIf="editMode" (click)="saveChanges()">Save Changes</button>
+    <button (click)="deleteRentenErstberechnungTeil1()">Daten zu Rentenerstberechnungteil1 löschen</button>
+    <button (click)="navigateToPersonDetail()">Zurück zu Stammdatenbereich</button>
+  </div>

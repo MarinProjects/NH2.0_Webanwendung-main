@@ -1,0 +1,122 @@
+<div class="pensions-daten-details">
+    <h2>Pensionsdaten Ansehen</h2>
+    <table class="person-table">
+      <!-- Display fields -->
+      <tr>
+        <th>Ratierlicher Anspruch</th>
+        <td>
+          <span *ngIf="!editMode">{{ pensionsDaten.ratierlicherAnspruch }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="pensionsDaten.ratierlicherAnspruch">
+        </td>
+      </tr>
+
+      <tr>
+        <th>prozentsatzTeiluebertragung</th>
+        <td>
+          <span *ngIf="!editMode">{{ pensionsDaten.prozentsatzTeiluebertragung }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="pensionsDaten.prozentsatzTeiluebertragung">
+        </td>
+      </tr>
+
+      <tr>
+        <th>pensionsfaehigesDurchschnittsgehaltVA</th>
+        <td>
+          <span *ngIf="!editMode">{{ pensionsDaten.pensionsfaehigesDurchschnittsgehaltVA }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="pensionsDaten.pensionsfaehigesDurchschnittsgehaltVA">
+        </td>
+      </tr>
+
+      
+
+      <tr>
+        <th>sozVersPflJahresgehaltVA</th>
+        <td>
+          <span *ngIf="!editMode">{{ pensionsDaten.sozVersPflJahresgehaltVA }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="pensionsDaten.sozVersPflJahresgehaltVA">
+        </td>
+      </tr>
+
+      
+
+      <tr>
+        <th>ruhegeldfaehigesDurchschnittsgehalt</th>
+        <td>
+          <span *ngIf="!editMode">{{ pensionsDaten.ruhegeldfaehigesDurchschnittsgehalt }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="pensionsDaten.ruhegeldfaehigesDurchschnittsgehalt">
+        </td>
+      </tr>
+
+      <tr>
+        <th>durchschnittsgehaltNachSozialplan</th>
+        <td>
+          <span *ngIf="!editMode">{{ pensionsDaten.durchschnittsgehaltNachSozialplan }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="pensionsDaten.durchschnittsgehaltNachSozialplan">
+        </td>
+      </tr>
+
+      <tr>
+        <th>teilzeitgrad</th>
+        <td>
+          <span *ngIf="!editMode">{{ pensionsDaten.teilzeitgrad }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="pensionsDaten.teilzeitgrad">
+        </td>
+      </tr>
+
+      <tr>
+        <th>sozVersFreieJahreAb20</th>
+        <td>
+          <span *ngIf="!editMode">{{ pensionsDaten.sozVersFreieJahreAb20 }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="pensionsDaten.sozVersFreieJahreAb20">
+        </td>
+      </tr>
+
+      <tr>
+        <th>schwerbehindert</th>
+        <td>
+          <span *ngIf="!editMode">{{ pensionsDaten.schwerbehindert }}</span>
+          <input *ngIf="editMode" type="text" [(ngModel)]="pensionsDaten.schwerbehindert">
+        </td>
+      </tr>
+
+      <tr>
+        <th>anzahlKinder</th>
+        <td>
+          <span *ngIf="!editMode">{{ pensionsDaten.anzahlKinder }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="pensionsDaten.anzahlKinder">
+        </td>
+      </tr>
+
+      <tr>
+        <th>steuerklasse</th>
+        <td>
+          <span *ngIf="!editMode">{{ pensionsDaten.steuerklasse }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="pensionsDaten.steuerklasse">
+        </td>
+      </tr>
+
+      <tr>
+        <th>bemerkung</th>
+        <td>
+          <span *ngIf="!editMode">{{ pensionsDaten.bemerkung }}</span>
+          <input *ngIf="editMode" type="text" [(ngModel)]="pensionsDaten.bemerkung">
+        </td>
+      </tr>
+
+     
+
+      
+
+      
+
+      
+
+      
+
+      <!-- Add similar blocks for other fields -->
+    </table>
+    <button *ngIf="!editMode" (click)="toggleEditMode()">Edit Details</button>
+    <button *ngIf="editMode" (click)="saveChanges()">Save Changes</button>
+    <button (click)="deletePensionsDaten()">Daten zu Pensionsdaten löschen</button>
+    <button (click)="navigateToPersonDetail()">Zurück zu Stammdatenbereich</button>
+  </div>
+  

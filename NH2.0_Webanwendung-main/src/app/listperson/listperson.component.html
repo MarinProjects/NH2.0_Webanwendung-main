@@ -1,0 +1,65 @@
+<!--
+<h2>Personenliste. Hier befinden sich alle Personen in der Datenbank.</h2>
+
+
+<button (click)="navigateToCreatePerson()">Personenstammsatz hinzufügen</button>
+
+<div>
+  <label for="searchPersonalnummer">Personalnummer: </label>
+  <input type="text" id="searchPersonalnummer" name="searchPersonalnummer" [(ngModel)]="personalnummerSearch">
+  <button (click)="searchByPersonalnummer()">Suchen</button>
+</div>
+
+
+<br>
+<br>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Personalnummer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let person of persons" (dblclick)="showPersonDetail(person._id)">
+      <td>{{ person.name }}</td>
+      <td>{{ person.personalnummer }}</td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+<h2 class="title">Personenliste. Hier befinden sich alle Personen in der Datenbank Neue_Heimat 2.0.</h2>
+
+
+  <button class="add-button" (click)="navigateToCreatePerson()">Personenstammsatz hinzufügen</button>
+  <button class = "add-button" (click)="exportPersons()">Export Persons</button>
+  <button class="add-button" (click)="exportAllPersonsToTxt()">Export All Persons to TXT</button>
+  <button class="add-button" (click)="navigateToPVAnpassung()">Anpassungsberechnung PV</button>
+  <button class="add-button" (click)="navigateToRGOAnpassung()">Anpassungsberechnung RGO</button>
+  <button class="add-button" (click)="backupDatabase()" >Datenbanksicherung</button>
+
+
+  <div class="search-container">
+    <label for="searchPersonalnummer">Personalnummer: </label>
+    <input type="text" id="searchPersonalnummer" name="searchPersonalnummer" [(ngModel)]="personalnummerSearch">
+    <button class="search-button" (click)="searchByPersonalnummer()">Suchen</button>
+  </div>
+
+  <table class="person-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Personalnummer</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let person of persons" (dblclick)="showPersonDetail(person._id)">
+        <td>{{ person.name }}</td>
+        
+        <td>{{ person.personalnummer }}</td>
+      </tr>
+    </tbody>
+  </table>
+

@@ -1,0 +1,23 @@
+<div class="form-container">
+    <h2 class="form-title">Neue Datenerfassung Personal Daten zum Verbliebenen Angehörigen</h2>
+  
+    <form #personaldatenForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" id="name" name="name" class="form-input" [(ngModel)]="formData.name">
+      </div>
+  
+      <div class="form-group">
+        <label for="geburtsdatum" class="form-label">Geburtsdatum</label>
+        <input type="date" id="geburtsdatum" name="geburtsdatum" class="form-input" [(ngModel)]="formData.geburtsdatum">
+      </div>
+  
+      <div class="form-group">
+        <label for="prozentsatz" class="form-label">Prozentsatz</label>
+        <input type="number" id="prozentsatz" name="prozentsatz" class="form-input" [(ngModel)]="formData.prozentsatz">
+      </div>
+  
+      <button type="submit" class="form-submit">Speichern</button>
+    </form>
+  </div>
+  

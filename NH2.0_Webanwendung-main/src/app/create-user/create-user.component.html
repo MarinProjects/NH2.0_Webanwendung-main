@@ -1,0 +1,105 @@
+<!-- create-person.component.html -->
+
+<div class="form-container">
+  <h2 class="form-title">Neue Heimat 2.0 Datenerfassung Stammdaten</h2>
+
+
+  <form #createForm="ngForm" (ngSubmit)="onSubmit(createForm)">
+    
+    
+
+    <div class="form-group">
+      <label for="aktuelleStatusgruppe" class="form-label">Aktuelle Statusgruppe</label>
+      <input type="text" id="aktuelleStatusgruppe" name="aktuelleStatusgruppe" class="form-input" ngModel>
+    </div>
+
+    <div class="form-group">
+      <label for="alteStatusgruppe" class="form-label">Alte Statusgruppe</label>
+      <input type="text" id="alteStatusgruppe" name="alteStatusgruppe" class="form-input"  ngModel>
+    </div>
+    <div class="form-group">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" id="name" name="name" class="form-input" required ngModel>
+    </div>
+    <div class="form-group">
+      <label for="personalnummer" class="form-label">Personalnummer</label>
+      <input type="text" id="personalnummer" name="personalnummer" class="form-input" required ngModel>
+    </div>
+    <div class="form-group">
+      <label for="adresse" class="form-label">Adresse</label>
+      <input type="text" id="adresse" name="adresse" class="form-input"  ngModel>
+    </div>
+    <div class="form-group">
+      <label for="geschlecht" class="form-label">Geschlecht</label>
+      <input type="text" id="geschlecht" name="geschlecht" class="form-input"  ngModel>
+    </div>
+    <div class="form-group">
+      <label for="familienstand" class="form-label">Familienstand</label>
+      <input type="text" id="familienstand" name="familienstand" class="form-input"  ngModel>
+    </div>
+    <div class="form-group">
+      <label for="geburtsdatum" class="form-label">Geburtsdatum</label>
+      <input type="text" id="geburtsdatum" name="geburtsdatum" class="form-input"  ngModel>
+    </div>
+    
+    <div class="form-group">
+      <label for="geheiratetAm" class="form-label">geheiratet am:</label>
+      <input type="text" id="geheiratetAm" name="geheiratetAm" class="form-input"  ngModel>
+    </div>
+
+    
+    <div class="form-group">
+      <label for="gesellschaft" class="form-label">Gesellschaft</label>
+      <input type="text" id="gesellschaft" name="gesellschaft" class="form-input"  ngModel>
+    </div>
+
+    
+    <div class="form-group">
+      <label for="versorgungsordnung" class="form-label">Versorgungsordnung</label>
+      <input type="text" id="versorgungsordnung" name="versorgungsordnung" class="form-input"  ngModel>
+    </div>
+    
+    <div class="form-group">
+      <label for="arbVerhRentTr" class="form-label">ArbVerhRentTr</label>
+      <input type="text" id="arbVerhRentTr" name="arbVerhRentTr" class="form-input"  ngModel>
+    </div>
+
+    
+    <div class="form-group">
+      <label for="unternehmenseintritt" class="form-label">Unternehmenseintritt</label>
+      <input type="text" id="unternehmenseintritt" name="unternehmenseintritt" class="form-input"  ngModel>
+    </div>
+    
+    <div class="form-group">
+      <label for="unternehmensaustritt" class="form-label">unternehmensaustritt</label>
+      <input type="text" id="unternehmensaustritt" name="unternehmensaustritt" class="form-input"  ngModel>
+    </div>
+    
+    <div class="form-group">
+      <label for="ruhegeldfaehigAb" class="form-label">Ruhegeldfaehig Ab</label>
+      <input type="text" id="ruhegeldfaehigAb" name="ruhegeldfaehigAb" class="form-input"  ngModel>
+    </div>
+    <div class="form-group">
+      <label for="rentenbeginn" class="form-label">Rentenbeginn</label>
+      <input type="text" id="rentenbeginn" name="rentenbeginn" class="form-input"  ngModel>
+    </div>
+    <div class="form-group">
+      <label for="zusagedatum" class="form-label">Zusagedatum</label>
+      <input type="text" id="zusagedatum" name="zusagedatum" class="form-input"  ngModel>
+    </div>
+
+    <div class="form-group">
+      <label for="verstorbenAm" class="form-label">verstorben Am</label>
+      <input type="text" id="verstorbenAm" name="verstorbenAm" class="form-input"  ngModel>
+    </div>
+
+    <div class="form-group">
+      <label for="bemerkung" class="form-label">Bemerkung</label>
+      <input type="text" id="bemerkung" name="bemerkung" class="form-input"  ngModel>
+    </div>
+    
+    <button type="submit" class="form-submit">Speichern</button>
+    
+  </form>
+  <button class = "add-button" class="form-submit" (click)="navigateToPersonlist()">Zurück zur Personenübersicht</button>
+</div>

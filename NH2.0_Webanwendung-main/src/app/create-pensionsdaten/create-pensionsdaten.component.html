@@ -1,0 +1,68 @@
+<div class="form-container">
+    <h2 class="form-title">Neue Heimat 2.0 Datenerfassung Pensionsdaten</h2>
+  
+    <form #pensionsdatenForm="ngForm" (ngSubmit)="onSubmit(pensionsdatenForm)">
+      <div class="form-group">
+        <label for="ratierlicherAnspruch" class="form-label">Ratierlicher Anspruch</label>
+        <input type="number" id="ratierlicherAnspruch" name="ratierlicherAnspruch" class="form-input" ngModel>
+      </div>
+  
+      <div class="form-group">
+        <label for="prozentsatzTeiluebertragung" class="form-label">Prozentsatz Teilübertragung</label>
+        <input type="number" id="prozentsatzTeiluebertragung" name="prozentsatzTeiluebertragung" class="form-input" ngModel>
+      </div>
+  
+      <div class="form-group">
+        <label for="pensionsfaehigesDurchschnittsgehaltVA" class="form-label">Pensionsfähiges Durchschnittsgehalt VA</label>
+        <input type="number" id="pensionsfaehigesDurchschnittsgehaltVA" name="pensionsfaehigesDurchschnittsgehaltVA" class="form-input" ngModel>
+      </div>
+  
+      <div class="form-group">
+        <label for="sozVersPflJahresgehaltVA" class="form-label">Sozialversicherungspflichtiges Jahresgehalt VA</label>
+        <input type="number" id="sozVersPflJahresgehaltVA" name="sozVersPflJahresgehaltVA" class="form-input" ngModel>
+      </div>
+  
+      <div class="form-group">
+        <label for="ruhegeldfaehigesDurchschnittsgehalt" class="form-label">Ruhegeldfähiges Durchschnittsgehalt</label>
+        <input type="number" id="ruhegeldfaehigesDurchschnittsgehalt" name="ruhegeldfaehigesDurchschnittsgehalt" class="form-input" ngModel>
+      </div>
+  
+      <div class="form-group">
+        <label for="durchschnittsgehaltNachSozialplan" class="form-label">Durchschnittsgehalt nach Sozialplan</label>
+        <input type="number" id="durchschnittsgehaltNachSozialplan" name="durchschnittsgehaltNachSozialplan" class="form-input" ngModel>
+      </div>
+  
+      <div class="form-group">
+        <label for="teilzeitgrad" class="form-label">Teilzeitgrad</label>
+        <input type="number" id="teilzeitgrad" name="teilzeitgrad" class="form-input" ngModel>
+      </div>
+  
+      <div class="form-group">
+        <label for="sozVersFreieJahreAb20" class="form-label">Sozialversicherungsfreie Jahre ab 20</label>
+        <input type="number" id="sozVersFreieJahreAb20" name="sozVersFreieJahreAb20" class="form-input" ngModel>
+      </div>
+  
+      <div class="form-group">
+        <label for="schwerbehindert" class="form-label">Schwerbehindert</label>
+        <input type="text" id="schwerbehindert" name="schwerbehindert" class="form-input" ngModel>
+      </div>
+  
+      <div class="form-group">
+        <label for="anzahlKinder" class="form-label">Anzahl Kinder</label>
+        <input type="number" id="anzahlKinder" name="anzahlKinder" class="form-input" ngModel>
+      </div>
+  
+      <div class="form-group">
+        <label for="steuerklasse" class="form-label">Steuerklasse</label>
+        <input type="text" id="steuerklasse" name="steuerklasse" class="form-input" ngModel>
+      </div>
+  
+      <div class="form-group">
+        <label for="bemerkung" class="form-label">Bemerkung</label>
+        <input type="text" id="bemerkung" name="bemerkung" class="form-input" ngModel>
+      </div>
+      
+      <button type="submit" class="form-submit">Speichern</button>
+    </form>
+  </div>
+  

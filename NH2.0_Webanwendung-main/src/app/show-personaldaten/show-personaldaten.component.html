@@ -1,0 +1,36 @@
+<div class="personal-daten-details">
+    <h2>Personaldaten zum verblienen Angehörigen</h2>
+    <table class="person-table">
+      <!-- Display fields -->
+      <tr>
+        <th>Name</th>
+        <td>
+          <span *ngIf="!editMode">{{ personaldaten.name }}</span>
+          <input *ngIf="editMode" type="text" [(ngModel)]="personaldaten.name">
+        </td>
+      </tr>
+  
+      <tr>
+        <th>Geburtsdatum</th>
+        <td>
+          <span *ngIf="!editMode">{{ personaldaten.geburtsdatum }}</span>
+          <input *ngIf="editMode" type="date" [(ngModel)]="personaldaten.geburtsdatum">
+        </td>
+      </tr>
+  
+      <tr>
+        <th>Prozentsatz</th>
+        <td>
+          <span *ngIf="!editMode">{{ personaldaten.prozentsatz }}</span>
+          <input *ngIf="editMode" type="number" [(ngModel)]="personaldaten.prozentsatz">
+        </td>
+      </tr>
+  
+      <!-- Add similar blocks for other fields -->
+    </table>
+    <button *ngIf="!editMode" (click)="toggleEditMode()">Edit Details</button>
+    <button *ngIf="editMode" (click)="saveChanges()">Save Changes</button>
+    <button (click)="deletePersonaldatenZumVerbliebenenAngehoerigen()">Daten zu Rentenerstberechnungteil1 löschen</button>
+    <button (click)="navigateToPersonDetail()">Zurück zu Stammdatenbereich</button>
+  </div>
+  

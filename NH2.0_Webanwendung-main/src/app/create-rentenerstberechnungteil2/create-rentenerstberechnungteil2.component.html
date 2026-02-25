@@ -1,0 +1,68 @@
+<div class="form-container">
+    <h2 class="form-title">Neue Renten Erstberechnung Teil 2 Datenerfassung</h2>
+  
+    <form #rentenErstberechnungTeil2Form="ngForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="gesamtversorgung" class="form-label">Gesamtversorgung</label>
+        <input type="number" id="gesamtversorgung" name="gesamtversorgung" class="form-input" [(ngModel)]="formData.gesamtversorgung">
+      </div>
+  
+      <div class="form-group">
+        <label for="gesetzlicheSVRente" class="form-label">Gesetzliche SV Rente</label>
+        <input type="number" id="gesetzlicheSVRente" name="gesetzlicheSVRente" class="form-input" [(ngModel)]="formData.gesetzlicheSVRente">
+      </div>
+  
+      <div class="form-group">
+        <label for="renteAusBefrLebensvers" class="form-label">Rente aus Befr Lebensvers</label>
+        <input type="number" id="renteAusBefrLebensvers" name="renteAusBefrLebensvers" class="form-input" [(ngModel)]="formData.renteAusBefrLebensvers">
+      </div>
+  
+      <div class="form-group">
+        <label for="andereAnzurechnRente" class="form-label">Andere anzurechnende Rente</label>
+        <input type="number" id="andereAnzurechnRente" name="andereAnzurechnRente" class="form-input" [(ngModel)]="formData.andereAnzurechnRente">
+      </div>
+  
+      <div class="form-group">
+        <label for="abschlag" class="form-label">Abschlag</label>
+        <input type="number" id="abschlag" name="abschlag" class="form-input" [(ngModel)]="formData.abschlag">
+      </div>
+  
+      <div class="form-group">
+        <label for="zusatzrente" class="form-label">Zusatzrente</label>
+        <input type="number" id="zusatzrente" name="zusatzrente" class="form-input" [(ngModel)]="formData.zusatzrente">
+      </div>
+  
+      <div class="form-group">
+        <label for="ratierlicherAnspruch" class="form-label">Ratierlicher Anspruch</label>
+        <input type="number" id="ratierlicherAnspruch" name="ratierlicherAnspruch" class="form-input" [(ngModel)]="formData.ratierlicherAnspruch">
+      </div>
+  
+      <div class="form-group">
+        <label for="anteil" class="form-label">Anteil</label>
+        <input type="number" id="anteil" name="anteil" class="form-input" [(ngModel)]="formData.anteil">
+      </div>
+  
+      <div class="form-group">
+        <label for="pension" class="form-label">Pension</label>
+        <input type="number" id="pension" name="pension" class="form-input" [(ngModel)]="formData.pension">
+      </div>
+  
+      <div class="form-group">
+        <label for="ausgleich" class="form-label">Ausgleich</label>
+        <input type="number" id="ausgleich" name="ausgleich" class="form-input" [(ngModel)]="formData.ausgleich">
+      </div>
+  
+      <div class="form-group">
+        <label for="betrRente" class="form-label">Betr Rente</label>
+        <input type="number" id="betrRente" name="betrRente" class="form-input" [(ngModel)]="formData.betrRente">
+      </div>
+  
+      <div class="form-group">
+        <label for="anpassungsschluessel" class="form-label">Anpassungsschlüssel</label>
+        <input type="number" id="anpassungsschluessel" name="anpassungsschluessel" class="form-input" [(ngModel)]="formData.anpassungsschluessel">
+      </div>
+  
+      <button type="submit" class="form-submit">Speichern</button>
+    </form>
+  </div>
+  
