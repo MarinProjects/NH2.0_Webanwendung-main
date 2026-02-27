@@ -150,6 +150,16 @@ export class PersonService {
     return this.http.get(`${this.apiUrl}/person/${personId}/personaldatenzumverbliebenenangehoerigen/${personaldatenZumVerbliebenenAngehoerigenId}`);
   }
 
+  getRGOHalfYear1Letters(payload: any) {
+  return this.http.post(`${this.apiUrl}/rgoHalfYear1Letters`, payload);
+}
+
+getRGOHalfYear2LetterData(payload: any) {
+  return this.http.post<any[]>(`${this.apiUrl}/rgoHalfYear2Letters`, payload);
+}
+
+
+
 
 
   // Freestyle 
@@ -237,6 +247,15 @@ export class PersonService {
    getTwoLatestAdjustmentsPV(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/latestAdjustments`);
   }
+
+  submitRGOHalfYear1Adjustment(payload: any) {
+  return this.http.post<any>(`${this.apiUrl}/adjustRGOHalfYear1`, payload);
+}
+
+submitRGOHalfYear2Adjustment(payload: any) {
+  return this.http.post<any>(`${this.apiUrl}/adjustRGOHalfYear2`, payload);
+}
+
   
  
 

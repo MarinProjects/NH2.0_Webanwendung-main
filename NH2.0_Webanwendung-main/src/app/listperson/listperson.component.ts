@@ -128,6 +128,25 @@ export class ListPersonComponent implements OnInit {
 
   }
 
+  navigateToRGOHalbjahr1() {
+  this.router.navigate([`/RGOHalbjahr1`]);
+}
+
+navigateToRGOSerienbriefH1() {
+  this.router.navigate(['/rgo-halbjahr1-serienbriefe']);
+}
+
+navigateToRGOHalfYear2() {
+  this.router.navigate(['/rgo-halbjahr2']);
+}
+
+navigateToRGOHalfYear2Letters() {
+  this.router.navigate(['/rgo-halbjahr2-serienbriefe']);
+}
+
+
+
+
   showPersonDetail(personId: string) {
     this.router.navigate(['/person', personId]);
   }

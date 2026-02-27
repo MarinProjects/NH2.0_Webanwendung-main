@@ -30,6 +30,10 @@ import { CreateDatenBzglDerLaufendenRenteComponent } from './create-daten-bzgl-d
 import { CreateEhegattenDatenComponent } from './create-ehegatten-daten/create-ehegatten-daten.component';
 import { CreatePersonaldatenzumverbliebenenangehoerigenComponent } from './create-personaldatenzumverbliebenenangehoerigen/create-personaldatenzumverbliebenenangehoerigen.component';
 import { AnpassungPensionsverordnungComponent } from './anpassung-pensionsverordnung/anpassung-pensionsverordnung.component';
+import { AnpassungRGOHalbjahr1Component } from './anpassung-rgohalbjahr1/anpassung-rgohalbjahr1.component';
+import { RGOHalbjahr1SerienbriefeComponent } from './rgohalbjahr1-serienbriefe/rgohalbjahr1-serienbriefe.component';
+import { AnpassungRGOHalbjahr2Component } from './anpassung-rgohalbjahr2/anpassung-rgohalbjahr2.component';
+import { RGOHalbjahr2SerienbriefeComponent } from './rgohalbjahr2-serienbriefe/rgohalbjahr2-serienbriefe.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +62,11 @@ import { AnpassungPensionsverordnungComponent } from './anpassung-pensionsverord
     CreateDatenBzglDerLaufendenRenteComponent,
     CreateEhegattenDatenComponent,
     CreatePersonaldatenzumverbliebenenangehoerigenComponent,
-    AnpassungPensionsverordnungComponent
+    AnpassungPensionsverordnungComponent,
+    AnpassungRGOHalbjahr1Component,
+    RGOHalbjahr1SerienbriefeComponent,
+    AnpassungRGOHalbjahr2Component,
+    RGOHalbjahr2SerienbriefeComponent
     
     
     

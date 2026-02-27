@@ -26,13 +26,20 @@ import { CreateEhegattenDatenComponent } from './create-ehegatten-daten/create-e
 import { CreatePersonaldatenzumverbliebenenangehoerigenComponent } from './create-personaldatenzumverbliebenenangehoerigen/create-personaldatenzumverbliebenenangehoerigen.component';
 
 import { AnpassungPensionsverordnungComponent } from './anpassung-pensionsverordnung/anpassung-pensionsverordnung.component';
-
-
+import { AnpassungRGOHalbjahr1Component } from './anpassung-rgohalbjahr1/anpassung-rgohalbjahr1.component';
+import { RGOHalbjahr1SerienbriefeComponent } from './rgohalbjahr1-serienbriefe/rgohalbjahr1-serienbriefe.component';
+import { AnpassungRGOHalbjahr2Component } from './anpassung-rgohalbjahr2/anpassung-rgohalbjahr2.component';
+import { RGOHalbjahr2SerienbriefeComponent } from './rgohalbjahr2-serienbriefe/rgohalbjahr2-serienbriefe.component';
 const routes: Routes = [
   { path: 'createperson', component: CreateUserComponent },
   { path: 'person/:id', component: ShowPersonDetailComponent },
   { path: 'list-person', component: ListPersonComponent },
   { path: 'PVAnpassung', component: AnpassungPensionsverordnungComponent },
+  { path: 'RGOHalbjahr1', component: AnpassungRGOHalbjahr1Component },
+  { path: 'rgo-halbjahr1-serienbriefe', component: RGOHalbjahr1SerienbriefeComponent },
+  { path: 'rgo-halbjahr2', component: AnpassungRGOHalbjahr2Component },
+  { path: 'rgo-halbjahr2-serienbriefe', component: RGOHalbjahr2SerienbriefeComponent },
+
   
   
 

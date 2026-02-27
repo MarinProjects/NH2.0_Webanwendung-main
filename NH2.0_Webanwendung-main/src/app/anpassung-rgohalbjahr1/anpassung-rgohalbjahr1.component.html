@@ -1,0 +1,43 @@
+<div class="container">
+  <h2>RGO Anpassung – Halbjahr 1 (VO 72 / 73 / 79)</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label>Terminangabe</label>
+      <input type="date" class="form-control" formControlName="terminangabe">
+    </div>
+
+    <div class="form-group">
+      <label>Gültig von</label>
+      <input type="date" class="form-control" formControlName="gueltigVon">
+    </div>
+
+    <div class="form-group">
+      <label>Gültig bis</label>
+      <input type="date" class="form-control" formControlName="gueltigBis">
+    </div>
+
+    <div class="form-group">
+      <label>Monatliche Mindestrente</label>
+      <input type="number" class="form-control" formControlName="monatlicheMindestrente">
+    </div>
+
+    <div class="form-group">
+      <label>Soll die Gesamtversorgung angepasst werden?</label>
+      <select class="form-control" formControlName="sollGesamtversorgungAngepasstWerden">
+        <option [ngValue]="true">Ja</option>
+        <option [ngValue]="false">Nein</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Anpassungswert in %</label>
+      <input type="number" step="0.01" class="form-control" formControlName="anpassungswertInPct">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Berechnung starten</button>
+  </form>
+
+  <button type="button" (click)="navigateToPersonList()">Zurück zur Personenübersicht</button>
+</div>

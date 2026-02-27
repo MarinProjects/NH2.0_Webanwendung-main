@@ -1,0 +1,44 @@
+<div class="container">
+  <h2>RGO Halbjahr 2 – Anpassungsberechnung</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>Terminangabe (Briefdatum)</label>
+      <input type="date" class="form-control" formControlName="terminangabe" />
+    </div>
+
+    <div class="form-group">
+      <label>Gültig von (neues Halbjahr)</label>
+      <input type="date" class="form-control" formControlName="gueltigVon" />
+    </div>
+
+    <div class="form-group">
+      <label>Gültig bis</label>
+      <input type="date" class="form-control" formControlName="gueltigBis" />
+    </div>
+
+    <div class="form-group">
+      <label>Monatliche Mindestrente</label>
+      <input type="number" class="form-control" formControlName="monatlicheMindestrente" />
+    </div>
+
+    <div class="form-group">
+      <label>Soll eine Anpassung der gesetzlichen Rente vorgenommen werden?</label>
+      <select class="form-control" formControlName="sollGesetzlicheRenteAngepasstWerden">
+        <option [ngValue]="true">Ja</option>
+        <option [ngValue]="false">Nein</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Anpassungswert in %</label>
+      <input type="number" class="form-control" formControlName="anpassungswertInPct" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Berechnung starten</button>
+  </form>
+
+  <button type="button" style="margin-top:12px" (click)="navigateToPersonList()">
+    Zurück
+  </button>
+</div>
