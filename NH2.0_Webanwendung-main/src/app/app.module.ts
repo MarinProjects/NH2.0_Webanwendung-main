@@ -34,6 +34,7 @@ import { AnpassungRGOHalbjahr1Component } from './anpassung-rgohalbjahr1/anpassu
 import { RGOHalbjahr1SerienbriefeComponent } from './rgohalbjahr1-serienbriefe/rgohalbjahr1-serienbriefe.component';
 import { AnpassungRGOHalbjahr2Component } from './anpassung-rgohalbjahr2/anpassung-rgohalbjahr2.component';
 import { RGOHalbjahr2SerienbriefeComponent } from './rgohalbjahr2-serienbriefe/rgohalbjahr2-serienbriefe.component';
+import { SolveniusComponent } from './solvenius/solvenius.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { RGOHalbjahr2SerienbriefeComponent } from './rgohalbjahr2-serienbriefe/r
     AnpassungRGOHalbjahr1Component,
     RGOHalbjahr1SerienbriefeComponent,
     AnpassungRGOHalbjahr2Component,
-    RGOHalbjahr2SerienbriefeComponent
+    RGOHalbjahr2SerienbriefeComponent,
+    SolveniusComponent
     
     
     

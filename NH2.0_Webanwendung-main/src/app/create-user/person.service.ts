@@ -256,6 +256,17 @@ submitRGOHalfYear2Adjustment(payload: any) {
   return this.http.post<any>(`${this.apiUrl}/adjustRGOHalfYear2`, payload);
 }
 
+
+// Übergabe an Solvenius
+
+// Übergabe an Solvenius
+
+getSolveniusExport() {
+  return this.http.get<any[]>(`${this.apiUrl}/solveniusExport`);
+}
+
+
+
   
  
 

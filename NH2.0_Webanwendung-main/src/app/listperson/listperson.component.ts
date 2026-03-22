@@ -144,6 +144,10 @@ navigateToRGOHalfYear2Letters() {
   this.router.navigate(['/rgo-halbjahr2-serienbriefe']);
 }
 
+navigateToSolvenius() {
+  this.router.navigate(['/solvenius']);
+}
+
 
 
 
