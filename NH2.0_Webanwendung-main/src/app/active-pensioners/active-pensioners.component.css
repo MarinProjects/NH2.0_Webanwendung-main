@@ -1,0 +1,55 @@
+.list-container {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.list-container h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.person-table {
+  width: 80%;
+  margin: 0 auto 25px auto;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.person-table th,
+.person-table td {
+  border: 1px solid #e5e5e5;
+  padding: 12px 16px;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.person-table th {
+  background-color: #f7f7f7;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.person-row {
+  cursor: pointer;
+}
+
+.person-row:hover {
+  background-color: #f3f3f3;
+}
+
+.button-row {
+  margin-top: 10px;
+}
+
+.button-row button {
+  padding: 10px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.no-data {
+  margin-top: 20px;
+  font-size: 1.1rem;
+}

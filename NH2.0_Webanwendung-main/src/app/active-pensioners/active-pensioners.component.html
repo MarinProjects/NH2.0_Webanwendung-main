@@ -1,0 +1,34 @@
+<div class="list-container">
+  <h1>Aktive Rentner</h1>
+
+  <table class="person-table" *ngIf="persons.length > 0">
+    <thead>
+      <tr>
+        <th>Personalnummer</th>
+        <th>Name</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let person of persons"
+        (dblclick)="showPersonDetail(person._id)"
+        class="person-row"
+      >
+        <td>{{ person.personalnummer }}</td>
+        <td>{{ person.name }}</td>
+        <td>{{ person.aktuelleStatusgruppe }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="persons.length === 0" class="no-data">
+    Keine aktiven Rentner gefunden.
+  </div>
+
+  <div class="button-row">
+    <button type="button" (click)="back()">Zurück zur Startseite</button>
+  </div>
+</div>
+
+

@@ -33,9 +33,14 @@
 <h2 class="title">Personenliste. Hier befinden sich alle Personen in der Datenbank Neue_Heimat 2.0.</h2>
 
 
+  <button class="add-button" (click)="navigateToActivePensioners()">Aktive Rentner anzeigen</button>
+
+
   <button class="add-button" (click)="navigateToCreatePerson()">Personenstammsatz hinzufügen</button>
-  <button class = "add-button" (click)="exportPersons()">Aktive Rentnermappe erstellen</button>
-  <button class="add-button" (click)="exportAllPersonsToTxt()">Aktiven Rentnerstammsatz exportieren</button>
+
+  <button class="add-button" (click)="exportAllPersonsToTxt()">Gesamten Rentnerstammsatz exportieren</button>
+  <button class="add-button" (click)="exportActivePersonsToCsv()">Aktiven Rentnerstammsatz exportieren</button>
+  <button class="add-button" (click)="exportDeceasedPersonsToCsv()">Inaktiven (verstorbene) Rentnerstammsatz exportieren</button>
 
   <button class="add-button" (click)="navigateToPVAnpassung()">Anpassungsberechnung Pensionsverordnung</button>
 

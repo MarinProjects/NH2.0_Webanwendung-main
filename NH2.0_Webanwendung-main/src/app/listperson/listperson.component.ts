@@ -59,6 +59,7 @@ import { PersonService } from '../create-user/person.service';
 import { ExportCsvService } from './export-csv.service';
 import { saveAs } from 'file-saver'; 
 import JSZip from 'jszip';
+import * as Papa from 'papaparse';
 
 import { HttpClient } from '@angular/common/http';
 
@@ -146,6 +147,10 @@ navigateToRGOHalfYear2Letters() {
 
 navigateToSolvenius() {
   this.router.navigate(['/solvenius']);
+}
+
+navigateToActivePensioners() {
+  this.router.navigate(['/active-pensioners']);
 }
 
 
@@ -260,23 +265,105 @@ navigateToSolvenius() {
 
 
   backupDatabase() {
-    this.http.get('/api/backupDatabase', { responseType: 'blob' }).subscribe(
-      (blob: Blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'Neue_Heimat_2.0_Sicherung.gz';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      },
-      (error: any) => {
-        console.error('Error downloading backup:', error);
-        alert('Failed to download database backup.');
-      }
-    );
+  this.http.get('/api/backupDatabase', { responseType: 'blob' }).subscribe(
+    (blob: Blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const year = now.getFullYear();
+
+      const fileName = `NeueHeimat_Sicherung_${day}${month}${year}.gz`;
+
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    },
+    (error: any) => {
+      console.error('Error downloading backup:', error);
+      alert('Failed to download database backup.');
+    }
+  );
+}
+
+private convertToCsv(data: any[]): string {
+    const csv = Papa.unparse({
+      fields: ['Name', 'Personalnummer'],
+      data: data.map(person => ({
+        Name: person.name || '',
+        Personalnummer: person.personalnummer || ''
+      }))
+    });
+    return csv;
   }
+
+exportActivePersonsToCsv() {
+  this.personService.getAllPersons().subscribe(
+    (persons: any[]) => {
+
+      // 🔍 Filter: nur aktive (nicht verstorben)
+      const activePersons = persons.filter(p => {
+        const status = (p.aktuelleStatusgruppe || '').toLowerCase();
+        return !status.startsWith('verst');
+      });
+
+      const csvData = this.convertToCsv(activePersons);
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const year = now.getFullYear();
+
+      const fileName = `Aktive_Rentner_${day}${month}${year}.csv`;
+
+      saveAs(blob, fileName);
+    },
+    (error) => {
+      console.error('Error fetching persons:', error);
+    }
+  );
+}
+
+
+exportDeceasedPersonsToCsv() {
+  this.personService.getAllPersons().subscribe(
+    (persons: any[]) => {
+
+      // 🔍 Filter: nur Verstorbene
+      const deceasedPersons = persons.filter(p => {
+        const status = (p.aktuelleStatusgruppe || '').toLowerCase();
+        return status.startsWith('verst');
+      });
+
+      const csvData = this.convertToCsv(deceasedPersons);
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const year = now.getFullYear();
+
+      const fileName = `Verstorbene_${day}${month}${year}.csv`;
+
+      saveAs(blob, fileName);
+    },
+    (error) => {
+      console.error('Error fetching persons:', error);
+    }
+  );
+}
+
+
+
+
+
+
 
 
 

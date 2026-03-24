@@ -31,6 +31,10 @@ import { RGOHalbjahr1SerienbriefeComponent } from './rgohalbjahr1-serienbriefe/r
 import { AnpassungRGOHalbjahr2Component } from './anpassung-rgohalbjahr2/anpassung-rgohalbjahr2.component';
 import { RGOHalbjahr2SerienbriefeComponent } from './rgohalbjahr2-serienbriefe/rgohalbjahr2-serienbriefe.component';
 import { SolveniusComponent } from './solvenius/solvenius.component';
+import { ActivePensionersComponent } from './active-pensioners/active-pensioners.component';
+
+
+
 const routes: Routes = [
   { path: 'createperson', component: CreateUserComponent },
   { path: 'person/:id', component: ShowPersonDetailComponent },
@@ -75,6 +79,9 @@ const routes: Routes = [
   { path: 'person/:id/addpensionsDaten', component: CreatePensionsdatenComponent },
 
   { path: 'solvenius', component: SolveniusComponent },
+
+
+  { path: 'active-pensioners', component: ActivePensionersComponent },
 
 
 

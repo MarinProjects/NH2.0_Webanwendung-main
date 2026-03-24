@@ -266,6 +266,12 @@ getSolveniusExport() {
 }
 
 
+getActivePensioners() {
+  return this.http.get<any[]>(`${this.apiUrl}/active-pensioners`);
+}
+
+
+
 
   
  
