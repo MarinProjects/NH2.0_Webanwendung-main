@@ -13,7 +13,7 @@
         <tr>
             <th>Geburtsdatum</th>
             <td>
-                <span *ngIf="!editMode">{{ ehegattenDaten.geburtsdatum }}</span>
+                <span *ngIf="!editMode">{{ ehegattenDaten.geburtsdatum | germanDate }}</span>
                 <input *ngIf="editMode" type="date" [(ngModel)]="ehegattenDaten.geburtsdatum">
             </td>
         </tr>

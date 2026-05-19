@@ -7,7 +7,7 @@
 <button (click)="navigateToPersonDetail()">Zurück zu Stammdatenbereich</button>
 
 <div *ngFor="let datenbzglderlaufendenRente of datenbzglderlaufendenRenteList" (dblclick)="viewDatenbzglderlaufendenRenteDetail(datenbzglderlaufendenRente._id)">
-    <p>Gültig Ab: {{ datenbzglderlaufendenRente.gueltigVon
+    <p>Gültig Ab: {{ datenbzglderlaufendenRente.gueltigVon | germanDate
     }}</p>
   </div>
   

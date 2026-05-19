@@ -5,7 +5,7 @@
       <tr>
         <th>gueltigVon</th>
         <td>
-          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.gueltigVon }}</span>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.gueltigVon | germanDate }}</span>
           <input *ngIf="editMode" type="date" [(ngModel)]="datenBzglDerLaufendenRente.gueltigVon">
         </td>
       </tr>
@@ -13,7 +13,7 @@
       <tr>
         <th>gueltigBis</th>
         <td>
-          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.gueltigBis }}</span>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.gueltigBis | germanDate }}</span>
           <input *ngIf="editMode" type="date" [(ngModel)]="datenBzglDerLaufendenRente.gueltigBis">
         </td>
       </tr>
@@ -21,7 +21,7 @@
       <tr>
         <th>eingabedatum</th>
         <td>
-          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.eingabedatum }}</span>
+          <span *ngIf="!editMode">{{ datenBzglDerLaufendenRente.eingabedatum | germanDate }}</span>
           <input *ngIf="editMode" type="date" [(ngModel)]="datenBzglDerLaufendenRente.eingabedatum">
         </td>
       </tr>

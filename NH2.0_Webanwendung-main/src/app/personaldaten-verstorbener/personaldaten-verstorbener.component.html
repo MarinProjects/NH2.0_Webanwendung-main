@@ -1,0 +1,51 @@
+<div class="container">
+  <h2>Personaldaten zum verstorbenen Angehörigen</h2>
+
+  <form [formGroup]="form" (ngSubmit)="speichern()">
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" class="form-control" formControlName="name">
+    </div>
+
+    <div class="form-group">
+      <label>Geburtsdatum</label>
+      <input type="date" class="form-control" formControlName="geburtsdatum">
+    </div>
+
+    <div class="form-group">
+      <label>Prozentsatz</label>
+      <input type="number" class="form-control" formControlName="prozentsatz">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Speichern</button>
+    <button type="button" class="btn btn-secondary" style="margin-left:12px" (click)="zurueck()">Zurück</button>
+  </form>
+
+  <hr>
+
+  <h3>Vorhandene Einträge</h3>
+
+  <table class="table table-bordered" *ngIf="eintraege.length > 0">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Geburtsdatum</th>
+        <th>Prozentsatz</th>
+        <th>Aktion</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let e of eintraege">
+        <td>{{ e.name }}</td>
+        <td>{{ e.geburtsdatum | date:'dd.MM.yyyy' }}</td>
+        <td>{{ e.prozentsatz }}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="loeschen(e._id)">Löschen</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="eintraege.length === 0">Keine Einträge vorhanden.</p>
+</div>

@@ -229,39 +229,67 @@ navigateToActivePensioners() {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  private formatValue(value: any): string {
-    if (value instanceof Date) {
-      return this.formatDate(value);
-    } else if (typeof value === 'boolean') {
-      return value ? 'Ja' : 'Nein';
-    } else {
-      return `${value}`;
+private formatValue(value: any): string {
+  if (value === null || value === undefined || value === '') {
+    return '';
+  }
+
+  if (this.isDateValue(value)) {
+    return this.formatDate(value);
+  }
+
+  if (typeof value === 'boolean') {
+    return value ? 'Ja' : 'Nein';
+  }
+
+  return `${value}`;
+}
+
+private isDateValue(value: any): boolean {
+  if (value instanceof Date) {
+    return true;
+  }
+
+  if (typeof value === 'string') {
+    return /^\d{4}-\d{2}-\d{2}T/.test(value);
+  }
+
+  return false;
+}
+
+private formatDate(value: any): string {
+  const date = new Date(value);
+
+  if (isNaN(date.getTime())) {
+    return `${value}`;
+  }
+
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${day}.${month}.${year}`;
+}
+
+private formatArrayItem(item: any): string {
+  let formattedItem = '';
+  const keys = Object.keys(item);
+
+  keys.forEach((key, index) => {
+    if (
+      key !== '_id' &&
+      key !== '__v' &&
+      item[key] !== null &&
+      item[key] !== undefined &&
+      item[key] !== ''
+    ) {
+      const separator = formattedItem === '' ? '' : ', ';
+      formattedItem += `${separator}${this.capitalizeFirstLetter(key)}: ${this.formatValue(item[key])}`;
     }
-  }
+  });
 
-  private formatDate(date: Date): string {
-    const year = date.getFullYear();
-    let month = (1 + date.getMonth()).toString().padStart(2, '0');
-    let day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
-
-  private formatArrayItem(item: any): string {
-    let formattedItem = '';
-    const keys = Object.keys(item);
-
-    keys.forEach((key, index) => {
-      if (key !== '_id' && key !== '__v' && item[key] !== null && item[key] !== undefined && item[key] !== '') {
-        if (index === 0) {
-          formattedItem += `${this.capitalizeFirstLetter(key)}: ${this.formatValue(item[key])}`;
-        } else {
-          formattedItem += `, ${this.capitalizeFirstLetter(key)}: ${this.formatValue(item[key])}`;
-        }
-      }
-    });
-
-    return formattedItem;
-  }
+  return formattedItem;
+}
 
 
   backupDatabase() {

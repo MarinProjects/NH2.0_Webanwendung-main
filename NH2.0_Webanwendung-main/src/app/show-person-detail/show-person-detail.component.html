@@ -191,7 +191,7 @@
       <tr>
         <th>Geburtsdatum</th>
         <td>
-          <span *ngIf="!editMode">{{ person.geburtsdatum }}</span>
+          <span *ngIf="!editMode">{{ person.geburtsdatum | germanDate }}</span>
           <input *ngIf="editMode" type="date" [(ngModel)]="person.geburtsdatum">
         </td>
       </tr>
@@ -200,7 +200,7 @@
       <tr>
         <th>Geheiratet am</th>
         <td>
-          <span *ngIf="!editMode">{{ person.geheiratetAm }}</span>
+          <span *ngIf="!editMode">{{ person.geheiratetAm | germanDate }}</span>
           <input *ngIf="editMode" type="date" [(ngModel)]="person.geheiratetAm">
         </td>
       </tr>
@@ -235,7 +235,7 @@
       <tr>
         <th>Unternehmenseintritt</th>
         <td>
-          <span *ngIf="!editMode">{{ person.unternehmenseintritt }}</span>
+          <span *ngIf="!editMode">{{ person.unternehmenseintritt | germanDate }}</span>
           <input *ngIf="editMode" type="date" [(ngModel)]="person.unternehmenseintritt">
         </td>
       </tr>
@@ -244,7 +244,7 @@
       <tr>
         <th>Unternehmensaustritt</th>
         <td>
-          <span *ngIf="!editMode">{{ person.unternehmensaustritt }}</span>
+          <span *ngIf="!editMode">{{ person.unternehmensaustritt | germanDate }}</span>
           <input *ngIf="editMode" type="date" [(ngModel)]="person.unternehmensaustritt">
         </td>
       </tr>
@@ -253,7 +253,7 @@
       <tr>
         <th>Ruhegeldfähig Ab</th>
         <td>
-          <span *ngIf="!editMode">{{ person.ruhegeldfaehigAb }}</span>
+          <span *ngIf="!editMode">{{ person.ruhegeldfaehigAb | germanDate }}</span>
           <input *ngIf="editMode" type="date" [(ngModel)]="person.ruhegeldfaehigAb">
         </td>
       </tr>
@@ -262,7 +262,7 @@
       <tr>
         <th>Rentenbeginn</th>
         <td>
-          <span *ngIf="!editMode">{{ person.rentenbeginn }}</span>
+          <span *ngIf="!editMode">{{ person.rentenbeginn | germanDate }}</span>
           <input *ngIf="editMode" type="date" [(ngModel)]="person.rentenbeginn">
         </td>
       </tr>
@@ -271,7 +271,7 @@
       <tr>
         <th>Zusagedatum</th>
         <td>
-          <span *ngIf="!editMode">{{ person.zusagedatum }}</span>
+          <span *ngIf="!editMode">{{ person.zusagedatum | germanDate }}</span>
           <input *ngIf="editMode" type="date" [(ngModel)]="person.zusagedatum">
         </td>
       </tr>
@@ -280,7 +280,7 @@
       <tr>
         <th>Verstorben Am</th>
         <td>
-          <span *ngIf="!editMode">{{ person.verstorbenAm }}</span>
+          <span *ngIf="!editMode">{{ person.verstorbenAm | germanDate }}</span>
           <input *ngIf="editMode" type="date" [(ngModel)]="person.verstorbenAm">
         </td>
       </tr>
@@ -314,10 +314,20 @@
       <button class = "add-button"  (click)="navigateToPensionsDaten()">Pensions & Ruhegeldfähige Daten</button>
       <button class = "add-button"  (click)="navigateToDatenbzglderlaufendenrente()">daten bzgl. der laufenden Rente</button>
       <button class = "add-button"  (click)="navigateToPersonaldatenzumverbliebenenangehoerigen()">personaldatenZumVerbliebenenAngehoerigen</button>
+      <button
+      class="add-button"
+      (click)="navigateToPersonaldatenVerstorbener()">
+      Personaldaten zum verstorbenen Angehörigen
+      </button>
+
       <button class = "add-button"  (click)="deletePerson()">Personenstammsatz löschen</button>
+      
       <button class = "add-button"  (click)="navigateToPersonlist()">Zurück zur Personenübersicht</button>
       <button class="add-button" (click)="exportPersonData()">Daten exportieren in CVC</button>
       <button class="add-button" (click)="exportPersonDataToTxt()">Daten exportieren in TXT</button>
+
+      <button class="add-button" (click)="markAsDeceased()">Person als verstorben markieren</button>
+
 
 
       

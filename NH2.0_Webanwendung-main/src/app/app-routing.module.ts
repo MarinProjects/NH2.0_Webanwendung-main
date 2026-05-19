@@ -33,7 +33,7 @@ import { RGOHalbjahr2SerienbriefeComponent } from './rgohalbjahr2-serienbriefe/r
 import { SolveniusComponent } from './solvenius/solvenius.component';
 import { ActivePensionersComponent } from './active-pensioners/active-pensioners.component';
 
-
+import { PersonaldatenVerstorbenerComponent } from './personaldaten-verstorbener/personaldaten-verstorbener.component';
 
 const routes: Routes = [
   { path: 'createperson', component: CreateUserComponent },
@@ -82,6 +82,8 @@ const routes: Routes = [
 
 
   { path: 'active-pensioners', component: ActivePensionersComponent },
+  
+  { path: 'person/:id/personaldatenverstorbener', component: PersonaldatenVerstorbenerComponent },
 
 
 

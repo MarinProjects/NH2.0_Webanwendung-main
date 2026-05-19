@@ -271,6 +271,28 @@ getActivePensioners() {
 }
 
 
+// Personendatenzumverstorbenen
+
+getPersonaldatenVerstorbener(personId: string) {
+  return this.http.get<any[]>(`${this.apiUrl}/person/${personId}/personaldatenverstorbener`);
+}
+
+addPersonaldatenVerstorbener(personId: string, data: any) {
+  return this.http.post<any>(`${this.apiUrl}/person/${personId}/personaldatenverstorbener`, data);
+}
+
+deletePersonaldatenVerstorbener(personId: string, entryId: string) {
+  return this.http.delete<any>(`${this.apiUrl}/person/${personId}/personaldatenverstorbener/${entryId}`);
+}
+
+markPersonAsDeceased(personId: string, payload: any) {
+  return this.http.post<any>(
+    `${this.apiUrl}/person/${personId}/markAsDeceased`,
+    payload
+  );
+}
+
+
 
 
   

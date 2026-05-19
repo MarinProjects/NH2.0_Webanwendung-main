@@ -246,7 +246,11 @@ export class ShowPersonDetailComponent implements OnInit {
   navigateToPersonlist(){
     const personId = this.route.snapshot.params['id'];
     this.router.navigate([`/list-person`]);
+  }
 
+  navigateToPersonaldatenVerstorbener(){
+    const personId = this.route.snapshot.params['id'];
+    this.router.navigate([`/person/${personId}/personaldatenverstorbener`]);
 
   }
 
@@ -307,12 +311,39 @@ export class ShowPersonDetailComponent implements OnInit {
   }
   
   // Helper function to format Date objects to YYYY-MM-DD format
-  private formatDate(date: Date): string {
-    const year = date.getFullYear();
-    let month = (1 + date.getMonth()).toString().padStart(2, '0');
-    let day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
+  private formatValue(value: any): string {
+  if (value === null || value === undefined || value === '') {
+    return '';
   }
+
+  if (this.isDateValue(value)) {
+    return this.formatDate(value);
+  }
+
+  if (typeof value === 'boolean') {
+    return value ? 'Ja' : 'Nein';
+  }
+
+  return `${value}`;
+}
+
+private isDateValue(value: any): boolean {
+  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value);
+}
+
+private formatDate(value: any): string {
+  const date = new Date(value);
+
+  if (isNaN(date.getTime())) {
+    return `${value}`;
+  }
+
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${day}.${month}.${year}`;
+}
 
 
 
@@ -344,7 +375,7 @@ export class ShowPersonDetailComponent implements OnInit {
   
 
   private generateTXTContent(): string {
-    let txtContent = '';
+    let content = '';
 
     // Filter keys to include only non-null attributes
     const keys = Object.keys(this.person);
@@ -366,10 +397,11 @@ export class ShowPersonDetailComponent implements OnInit {
       }
 
       // Append field name and value to TXT content
-      txtContent += `${this.capitalizeFirstLetterr(field)}: ${value}\r\n`;
+      //txtContent += `${this.capitalizeFirstLetterr(field)}: ${value}\r\n`;
+      content += `${keys}: ${this.formatValue(value)}\n`;
     });
 
-    return txtContent;
+    return content;
   }
 
   private capitalizeFirstLetterr(str: string): string {
@@ -398,7 +430,7 @@ export class ShowPersonDetailComponent implements OnInit {
               content += `- ${this.formatArrayItem(item)}\n`; // Format each array item
             });
           } else if (!Array.isArray(value)) {
-            content += `${key}: ${value}\n`;
+            content += `${key}: ${this.formatValue(value)}\n`;
           }
           // If value is an empty array, it will not be added to the content
         }
@@ -409,21 +441,179 @@ export class ShowPersonDetailComponent implements OnInit {
   }
   
   formatArrayItem(item: any): string {
-    let formattedItem = '';
-    const keys = Object.keys(item);
-  
-    keys.forEach((key, index) => {
-      if (key !== '_id' && key !== '__v' && item[key] !== null && item[key] !== undefined && item[key] !== '') {
-        if (index === 0) {
-          formattedItem += `${key}: ${item[key]}`;
-        } else {
-          formattedItem += `, ${key}: ${item[key]}`;
-        }
+  let formattedItem = '';
+  const keys = Object.keys(item);
+
+  keys.forEach((key) => {
+    if (
+      key !== '_id' &&
+      key !== '__v' &&
+      item[key] !== null &&
+      item[key] !== undefined &&
+      item[key] !== ''
+    ) {
+      const separator = formattedItem === '' ? '' : ', ';
+      formattedItem += `${separator}${key}: ${this.formatValue(item[key])}`;
+    }
+  });
+
+  return formattedItem;
+}
+
+markAsDeceased(): void {
+
+  const personId = this.route.snapshot.params['id'];
+
+  // Schritt 1
+  const sicher = confirm(
+    'Sind Sie sicher, dass diese Person verstorben ist?\n\n' +
+    'OK = Ja\n' +
+    'Abbrechen = Storno'
+  );
+
+  if (!sicher) {
+    return;
+  }
+
+  // Schritt 2
+  const verstorbenAm = prompt(
+    'Wann ist die Person verstorben?\n\n' +
+    'Bitte Datum im Format YYYY-MM-DD eingeben.\n\n' +
+    'Abbrechen = Storno'
+  );
+
+  if (verstorbenAm === null || verstorbenAm.trim() === '') {
+    return;
+  }
+
+  // Schritt 3
+  const hasSurvivor = confirm(
+    'Gibt es eine hinterbliebene Person?\n\n' +
+    'OK = Ja\n' +
+    'Abbrechen = Nein'
+  );
+
+  // KEINE hinterbliebene Person
+  if (!hasSurvivor) {
+
+    const finalConfirm = confirm(
+      'Die Person wird nun als verstorben markiert.\n\n' +
+      `Sterbedatum: ${verstorbenAm}\n\n` +
+      'Es gibt keine hinterbliebene Person.\n\n' +
+      'OK = Speichern\n' +
+      'Abbrechen = Storno'
+    );
+
+    if (!finalConfirm) {
+      return;
+    }
+
+    this.personService.markPersonAsDeceased(personId, {
+      verstorbenAm,
+      hasSurvivor: false
+    }).subscribe({
+      next: (res: any) => {
+        alert(res.message);
+        window.location.reload();
+      },
+      error: (err: any) => {
+        console.error(err);
+        alert('Fehler beim Markieren als verstorben.');
       }
     });
-  
-    return formattedItem;
+
+    return;
   }
+
+  // Schritt 4
+  const survivorSelection = prompt(
+    'Welche Art von hinterbliebener Person gibt es?\n\n' +
+    '1 = Ehegatte / Ehegattin\n' +
+    '2 = Angehöriger / Angehörige\n\n' +
+    'Abbrechen = Storno'
+  );
+
+  if (survivorSelection === null) {
+    return;
+  }
+
+  let survivorType = '';
+
+  if (survivorSelection === '1') {
+
+    survivorType = 'ehegatte';
+
+  } else if (survivorSelection === '2') {
+
+    survivorType = 'angehoeriger';
+
+  } else {
+
+    alert('Ungültige Auswahl.');
+    return;
+  }
+
+  // Schritt 5
+  const survivorPersonalnummer = prompt(
+    'Bitte Personalnummer der hinterbliebenen Person eingeben.\n\n' +
+    'Abbrechen = Storno'
+  );
+
+  if (
+    survivorPersonalnummer === null ||
+    survivorPersonalnummer.trim() === ''
+  ) {
+    return;
+  }
+
+  // Schritt 6
+  const finalConfirm = confirm(
+    'Sie sind dabei die Person als verstorben zu markieren.\n\n' +
+    `Sterbedatum: ${verstorbenAm}\n` +
+    `Hinterbliebene Personalnummer: ${survivorPersonalnummer}\n` +
+    `Typ: ${survivorType}\n\n` +
+
+    'Die datenbzglderlaufendenRente der verstorbenen Person\n' +
+    'werden bei der hinterbliebenen Person angelegt.\n\n' +
+
+    'Bei der verstorbenen Person werden die\n' +
+    'datenbzglderlaufendenRente gelöscht.\n\n' +
+
+    'OK = Durchführung\n' +
+    'Abbrechen = Storno'
+  );
+
+  if (!finalConfirm) {
+    return;
+  }
+
+  // Backend-Aufruf
+  this.personService.markPersonAsDeceased(personId, {
+    verstorbenAm,
+    hasSurvivor: true,
+    survivorType,
+    survivorPersonalnummer
+  }).subscribe({
+    next: (res: any) => {
+
+      alert(
+        'Die Person wurde erfolgreich als verstorben markiert.\n\n' +
+        'Die Hinterbliebenen-Daten wurden übernommen.'
+      );
+
+      window.location.reload();
+    },
+
+    error: (err: any) => {
+      console.error(err);
+
+      alert(
+        err?.error?.message ||
+        'Fehler beim Markieren als verstorben.'
+      );
+    }
+  });
+}
 
 
 

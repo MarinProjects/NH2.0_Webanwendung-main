@@ -36,6 +36,8 @@ import { AnpassungRGOHalbjahr2Component } from './anpassung-rgohalbjahr2/anpassu
 import { RGOHalbjahr2SerienbriefeComponent } from './rgohalbjahr2-serienbriefe/rgohalbjahr2-serienbriefe.component';
 import { SolveniusComponent } from './solvenius/solvenius.component';
 import { ActivePensionersComponent } from './active-pensioners/active-pensioners.component';
+import { PersonaldatenVerstorbenerComponent } from './personaldaten-verstorbener/personaldaten-verstorbener.component';
+import { GermanDatePipe } from './pipes/german-date.pipe';
 
 @NgModule({
   declarations: [
@@ -70,7 +72,9 @@ import { ActivePensionersComponent } from './active-pensioners/active-pensioners
     AnpassungRGOHalbjahr2Component,
     RGOHalbjahr2SerienbriefeComponent,
     SolveniusComponent,
-    ActivePensionersComponent
+    ActivePensionersComponent,
+    PersonaldatenVerstorbenerComponent,
+    GermanDatePipe
     
     
     
