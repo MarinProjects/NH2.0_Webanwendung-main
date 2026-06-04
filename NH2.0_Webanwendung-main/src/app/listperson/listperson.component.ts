@@ -392,6 +392,10 @@ exportRGOPersons() {
   this.exportCsvService.exportRGOPersonsToCsv();
 }
 
+exportImportFile() {
+  this.exportCsvService.exportImportFile();
+}
+
 
 
 

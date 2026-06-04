@@ -108,6 +108,151 @@ private convertRGOPersonsToCsv(data: any[]): string {
 }
 
 
+exportImportFile() {
+
+  this.personService.getAllPersons().subscribe(
+    (persons: any[]) => {
+
+      const content = this.generateImportFile(persons);
+
+      const blob = new Blob(
+        [content],
+        { type: 'application/javascript;charset=utf-8' }
+      );
+
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const year = now.getFullYear();
+
+      saveAs(
+        blob,
+        `Import_${day}${month}${year}.js`
+      );
+    },
+    (error) => {
+      console.error(error);
+    }
+  );
+}
+
+private generateImportFile(persons: any[]): string {
+
+  const jsonData = persons.map(person => {
+
+    const clone = JSON.parse(JSON.stringify(person));
+
+    delete clone._id;
+    delete clone.__v;
+
+    return this.convertDatesToJS(clone);
+
+  });
+
+  return `
+const axios = require('axios');
+
+const dataToInsert = ${JSON.stringify(jsonData, null, 2)}
+  .map(person => reviveDates(person));
+
+function reviveDates(obj) {
+
+  const dateFields = [
+    'geburtsdatum',
+    'geheiratetAm',
+    'unternehmenseintritt',
+    'unternehmensaustritt',
+    'ruhegeldfaehigAb',
+    'rentenbeginn',
+    'zusagedatum',
+    'verstorbenAm'
+  ];
+
+  dateFields.forEach(field => {
+
+    if (obj[field]) {
+      obj[field] = new Date(obj[field]);
+    }
+
+  });
+
+  return obj;
+}
+
+async function insertData() {
+
+  for (let i = 0; i < dataToInsert.length; i++) {
+
+    const person = dataToInsert[i];
+
+    try {
+
+      await axios.post(
+        'http://localhost:4000/api/person',
+        person
+      );
+
+      console.log(
+        \`✔️ Inserted personalnummer \${person.personalnummer}\`
+      );
+
+    } catch (error) {
+
+      if (error.response) {
+
+        if (error.response.status === 400) {
+
+          console.warn(
+            \`⚠️ personalnummer \${person.personalnummer} exists – skipped\`
+          );
+
+          continue;
+        }
+
+        console.error(
+          \`❌ HTTP \${error.response.status}\`,
+          error.response.data
+        );
+
+      } else {
+
+        console.error(error.message);
+
+      }
+    }
+  }
+
+  console.log('✅ Import finished.');
+}
+
+insertData();
+`;
+}
+
+private convertDatesToJS(obj: any): any {
+
+  Object.keys(obj).forEach(key => {
+
+    const value = obj[key];
+
+    if (value instanceof Array) {
+
+      value.forEach(v => this.convertDatesToJS(v));
+
+    } else if (
+      value &&
+      typeof value === 'object'
+    ) {
+
+      this.convertDatesToJS(value);
+
+    }
+  });
+
+  return obj;
+}
+
+
 
 
 }
