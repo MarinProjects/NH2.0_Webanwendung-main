@@ -63,4 +63,51 @@ export class ExportCsvService {
     });
     return csv;
   }
+
+
+// Export RGO Persons
+exportRGOPersonsToCsv() {
+  this.personService.getAllPersons().subscribe(
+    (persons: any[]) => {
+
+      const rgoPersons = persons.filter(p =>
+        [72, 73, 79].includes(Number(p.versorgungsordnung))
+      );
+
+      const csvData = this.convertRGOPersonsToCsv(rgoPersons);
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const year = now.getFullYear();
+
+      const fileName = `RGO_Personen_${day}${month}${year}.csv`;
+
+      saveAs(blob, fileName);
+    },
+    (error) => {
+      console.error('Error fetching RGO persons:', error);
+    }
+  );
+}
+
+// Help function for exportRGOPersonsToCsv
+
+private convertRGOPersonsToCsv(data: any[]): string {
+  const csv = Papa.unparse({
+    fields: ['Personalnummer', 'Name', 'Versorgungsordnung'],
+    data: data.map(person => ({
+      Personalnummer: person.personalnummer || '',
+      Name: person.name || '',
+      Versorgungsordnung: person.versorgungsordnung || ''
+    }))
+  });
+
+  return csv;
+}
+
+
+
+
 }

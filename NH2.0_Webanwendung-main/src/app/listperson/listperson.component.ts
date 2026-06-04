@@ -388,6 +388,11 @@ exportDeceasedPersonsToCsv() {
 }
 
 
+exportRGOPersons() {
+  this.exportCsvService.exportRGOPersonsToCsv();
+}
+
+
 
 
 
