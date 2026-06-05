@@ -3,6 +3,261 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PersonService } from '../create-user/person.service';
 
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+
+(pdfMake as any).addVirtualFileSystem(pdfFonts);
+
+
+
+@Component({
+  selector: 'app-rgohalbjahr2-serienbriefe',
+  templateUrl: './rgohalbjahr2-serienbriefe.component.html',
+  styleUrls: ['./rgohalbjahr2-serienbriefe.component.css']
+})
+export class RGOHalbjahr2SerienbriefeComponent {
+  form: FormGroup;
+
+  constructor(
+    private fb: FormBuilder,
+    private personService: PersonService,
+    private router: Router
+  ) {
+    this.form = this.fb.group({
+      terminangabe: ['', Validators.required],
+      gueltigVon: ['', Validators.required],
+      anpassungswertInPct: [0, Validators.required],
+      monatlicheMindestrente: [0, Validators.required]
+    });
+  }
+
+  onSubmit(): void {
+    if (this.form.invalid) {
+      alert('Bitte alle Felder ausfüllen.');
+      return;
+    }
+
+    const payload = this.form.value;
+
+    this.personService.getRGOHalfYear2LetterData(payload).subscribe({
+      next: (data: any[]) => {
+        if (!data || data.length === 0) {
+          alert('Keine Daten für Serienbriefe gefunden.');
+          return;
+        }
+
+        const docDefinition = this.buildPdfDefinition(data, payload);
+        const dateKey = this.toDateKey(payload.gueltigVon);
+
+        (pdfMake as any).createPdf(docDefinition).download(
+  `RGO_Halbjahr2_Sammelbrief_${dateKey}.pdf`
+);
+      },
+      error: (err: any) => {
+        console.error(err);
+        alert('Fehler beim Erstellen der Sammel-PDF.');
+      }
+    });
+  }
+
+  private buildPdfDefinition(data: any[], payload: any): any {
+    const content: any[] = [];
+
+    data.forEach((p, index) => {
+      if (index > 0) {
+        content.push({ text: '', pageBreak: 'before' });
+      }
+
+      content.push(...this.buildLetter(p, payload));
+    });
+
+    return {
+      pageSize: 'A4',
+      pageMargins: [60, 50, 50, 50],
+      defaultStyle: {
+        fontSize: 10,
+        font: 'Roboto'
+      },
+      content
+    };
+  }
+
+  private buildLetter(p: any, payload: any): any[] {
+    const oldDate = this.previousDay(payload.gueltigVon);
+    const newDate = payload.gueltigVon;
+
+    const rows: any[] = [
+      [
+        { text: 'Rentenzahlung zum', bold: true },
+        { text: this.formatDate(oldDate), alignment: 'right', bold: true },
+        { text: this.formatDate(newDate), alignment: 'right', bold: true }
+      ],
+      [
+        'Gesamtversorgung',
+        { text: this.eur(p.oldGesamtversorgung), alignment: 'right' },
+        { text: this.eur(p.newGesamtversorgung), alignment: 'right' }
+      ],
+      [
+        '- anrechenbare SV-Rente',
+        { text: this.eur(p.oldGesetzlicheSVRente), alignment: 'right' },
+        { text: this.eur(p.newGesetzlicheSVRente), alignment: 'right' }
+      ]
+    ];
+
+    if (p.renteAusBefrLebensvers && p.renteAusBefrLebensvers > 0) {
+      rows.push([
+        '- Rente aus befr. Lebensvers.',
+        { text: this.eur(p.renteAusBefrLebensvers), alignment: 'right' },
+        { text: this.eur(p.renteAusBefrLebensvers), alignment: 'right' }
+      ]);
+    }
+
+    rows.push([
+      'Zwischensumme',
+      { text: this.eur(p.oldBasis), alignment: 'right' },
+      { text: this.eur(p.newBasis), alignment: 'right' }
+    ]);
+
+    if (p.abschlagPct && p.abschlagPct > 0) {
+      rows.push([
+        `- Abschlag ${this.percent(p.abschlagPct)}`,
+        { text: this.eur(p.oldAbschlagBetrag), alignment: 'right' },
+        { text: this.eur(p.newAbschlagBetrag), alignment: 'right' }
+      ]);
+    }
+
+    rows.push([
+      'Betriebliche Rente',
+      { text: this.eur(p.oldBetrRente), alignment: 'right' },
+      { text: this.eur(p.newBetrRente), alignment: 'right' }
+    ]);
+
+    if (p.ratierlicherAnspruchPct && p.ratierlicherAnspruchPct > 0) {
+      rows.push([
+        `unverfallbarer Anspruch ${this.percent(p.ratierlicherAnspruchPct)}`,
+        '',
+        ''
+      ]);
+      rows.push([
+        '= Betriebliche Rente',
+        { text: this.eur(p.oldBetrRente), alignment: 'right' },
+        { text: this.eur(p.newBetrRente), alignment: 'right', bold: true }
+      ]);
+    }
+
+    return [
+      { text: p.adresse || '', margin: [0, 0, 0, 30] },
+
+      {
+        columns: [
+          { text: '' },
+          {
+            text: `${this.formatDate(payload.terminangabe)}\n${p.aktenzeichen}`,
+            alignment: 'right'
+          }
+        ],
+        margin: [0, 0, 0, 35]
+      },
+
+      { text: 'Betriebliche Altersversorgung', bold: true },
+      {
+        text: `Anpassung nach Par. 11 der Ruhegeldordnung zum ${this.formatDate(payload.gueltigVon)}`,
+        bold: true,
+        margin: [0, 0, 0, 30]
+      },
+
+      { text: `Sehr geehrte/r ${p.name},`, margin: [0, 0, 0, 18] },
+
+      {
+        text:
+          `die gesetzlichen Renten wurden zum ${this.formatDate(payload.gueltigVon)} ` +
+          `um ${this.percent(p.anpassungswertInPct)} erhöht.`,
+        margin: [0, 0, 0, 14]
+      },
+
+      {
+        text:
+          `Nachstehend die Neuberechnung Ihrer betrieblichen Rente zum ` +
+          `${this.formatDate(payload.gueltigVon)}.`,
+        margin: [0, 0, 0, 18]
+      },
+
+      {
+        table: {
+          widths: ['*', 100, 100],
+          body: rows
+        },
+        layout: 'noBorders',
+        margin: [0, 0, 0, 35]
+      },
+
+      {
+        text:
+          'Wenn Sie Fragen haben oder weitere Informationen benötigen, rufen Sie uns bitte an.',
+        margin: [0, 0, 0, 30]
+      },
+
+      { text: 'Mit freundlichen Grüßen\nBGAG' }
+    ];
+  }
+
+  back(): void {
+    this.router.navigate(['/list-person']);
+  }
+
+  private eur(value: any): string {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return '0,00';
+    return n.toLocaleString('de-DE', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
+  private percent(value: any): string {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return '0,00 %';
+    return n.toLocaleString('de-DE', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }) + ' %';
+  }
+
+  private formatDate(value: any): string {
+    if (!value) return '';
+    const d = new Date(value);
+    if (isNaN(d.getTime())) return '';
+
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+
+    return `${day}.${month}.${year}`;
+  }
+
+  private previousDay(value: any): Date {
+    const d = new Date(value);
+    d.setDate(d.getDate() - 1);
+    return d;
+  }
+
+  private toDateKey(value: any): string {
+    const d = new Date(value);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}${month}${year}`;
+  }
+}
+
+
+
+/** 
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { PersonService } from '../create-user/person.service';
+
 import * as pdfMakeModule from 'pdfmake/build/pdfmake';
 import * as pdfFontsModule from 'pdfmake/build/vfs_fonts';
 
@@ -294,3 +549,4 @@ export class RGOHalbjahr2SerienbriefeComponent {
     return name;
   }
 }
+*/

@@ -154,11 +154,13 @@ export class PersonService {
   return this.http.post(`${this.apiUrl}/rgoHalfYear1Letters`, payload);
 }
 
+/**
+
 getRGOHalfYear2LetterData(payload: any) {
   return this.http.post<any[]>(`${this.apiUrl}/rgoHalfYear2Letters`, payload);
 }
 
-
+ */
 
 
 
@@ -288,6 +290,13 @@ deletePersonaldatenVerstorbener(personId: string, entryId: string) {
 markPersonAsDeceased(personId: string, payload: any) {
   return this.http.post<any>(
     `${this.apiUrl}/person/${personId}/markAsDeceased`,
+    payload
+  );
+}
+
+getRGOHalfYear2LetterData(payload: any) {
+  return this.http.post<any[]>(
+    `${this.apiUrl}/getRGOHalfYear2LetterData`,
     payload
   );
 }
