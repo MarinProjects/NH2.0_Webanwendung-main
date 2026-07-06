@@ -147,13 +147,13 @@ export class RGOHalbjahr2SerienbriefeComponent {
       ]);
     }
 
-    if (Number(p.anteilPct) > 0) {
-      rows.push([
-        `davon zahlt die HVB ${this.percent(p.anteilPct)}`,
-        { text: this.eur(p.oldBetrRente), alignment: 'right' },
-        { text: this.eur(p.newBetrRente), alignment: 'right' }
-      ]);
-    }
+    if (Number(p.anteilPct) > 0 && Number(p.anteilPct) < 100) {
+  rows.push([
+    `davon zahlt die HVB ${this.percent(p.anteilPct)}`,
+    { text: this.eur(p.oldBetrRente), alignment: 'right' },
+    { text: this.eur(p.newBetrRente), alignment: 'right' }
+  ]);
+}
 
     rows.push([
       { text: '= Betriebliche Rente', bold: true },
