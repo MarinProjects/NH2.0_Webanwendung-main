@@ -1,0 +1,18 @@
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: inline-block;
+  min-width: 245px;
+  vertical-align: top;
+}
+
+.benutzertext-container textarea {
+  width: 500px;
+  max-width: 100%;
+  min-height: 120px;
+  padding: 8px;
+  resize: vertical;
+  box-sizing: border-box;
+}

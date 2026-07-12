@@ -218,11 +218,11 @@ export class SolveniusComponent {
         }
 
         if (lines81A.length > 0) {
-          this.downloadTxt(`ANP${fileDayMonth}GSP.TXT`, lines81A.join('\r\n'));
+          this.downloadTxt(`ANP${fileDayMonth}.GSP`, lines81A.join('\r\n'));
         }
 
         if (linesOther.length > 0) {
-          this.downloadTxt(`ANP${fileDayMonth}NH.TXT`, linesOther.join('\r\n'));
+          this.downloadTxt(`ANP${fileDayMonth}.NH`, linesOther.join('\r\n'));
         }
 
         alert('Solvenius-Export wurde erstellt.');
@@ -264,7 +264,7 @@ export class SolveniusComponent {
 
     const zweiterTeil = `${gueltigVon}0${bezugsart}=0220${betragOhneKomma}*`;
 
-    return `${ersterTeil}  ${zweiterTeil}`;
+    return `${ersterTeil}      ${zweiterTeil}`;
   }
 
   private formatDateDDMMYYYY(value: any): string {
