@@ -61,11 +61,42 @@
 
 
 
-  <div class="search-container">
-    <label for="searchPersonalnummer">Personalnummer: </label>
-    <input type="text" id="searchPersonalnummer" name="searchPersonalnummer" [(ngModel)]="personalnummerSearch">
-    <button class="search-button" (click)="searchByPersonalnummer()">Suchen</button>
-  </div>
+ <div class="search-container">
+
+  <label>Personalnummer:</label>
+
+  <input
+    type="text"
+    [(ngModel)]="personalnummerSearch"
+    (keyup.enter)="searchByPersonalnummer()"
+  />
+
+  <button
+    type="button"
+    (click)="searchByPersonalnummer()"
+  >
+    Suchen
+  </button>
+
+
+  <label style="margin-left: 20px;">
+    Name:
+  </label>
+
+  <input
+    type="text"
+    [(ngModel)]="nameSearch"
+    (keyup.enter)="searchByName()"
+  />
+
+  <button
+    type="button"
+    (click)="searchByName()"
+  >
+    Suchen
+  </button>
+
+</div>
 
   <table class="person-table">
     <thead>

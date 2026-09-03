@@ -186,6 +186,12 @@ getRGOHalfYear2LetterData(payload: any) {
     return this.http.get<any>(`${this.apiUrl}/persons/${personalnummer}`);
   }
 
+  getPersonsByName(name: string): Observable<any[]> {
+  return this.http.get<any[]>(
+    `${this.apiUrl}/persons/name/${encodeURIComponent(name)}`
+  );
+}
+
 
 
 

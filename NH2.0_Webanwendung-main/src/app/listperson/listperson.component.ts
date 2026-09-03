@@ -17,6 +17,7 @@ import * as Papa from 'papaparse';
 export class ListPersonComponent implements OnInit {
   persons: any[] = [];
   personalnummerSearch: string = '';
+  nameSearch: string = '';
 
   /**
    * Nur Personen mit diesen Versorgungsordnungen
@@ -86,6 +87,32 @@ export class ListPersonComponent implements OnInit {
         }
       });
   }
+
+  searchByName(): void {
+  const name = this.nameSearch.trim();
+
+  if (name === '') {
+    this.loadPersons();
+    return;
+  }
+
+  this.personService
+    .getPersonsByName(name)
+    .subscribe({
+      next: (data: any[]) => {
+        this.persons = data || [];
+      },
+
+      error: (error: any) => {
+        console.error(
+          'Error fetching persons by name:',
+          error
+        );
+
+        this.persons = [];
+      }
+    });
+}
 
   showPersonDetail(personId: string): void {
     this.router.navigate(['/person', personId]);
