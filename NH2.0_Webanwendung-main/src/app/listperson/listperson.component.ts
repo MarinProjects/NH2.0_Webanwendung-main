@@ -642,13 +642,13 @@ export class ListPersonComponent implements OnInit {
         backupBlob: Blob
       ) => {
 
-        // Vollständige Datenbanksicherung
+        // 1. Vollständige Datenbanksicherung
         this.downloadFile(
           backupBlob,
           `NeueHeimat_Sicherung_${dateKey}.gz`
         );
 
-        // Personen für Merser laden
+        // Personen für beide Merser-Dateien laden
         this.personService
           .getAllPersons()
           .subscribe({
@@ -657,40 +657,94 @@ export class ListPersonComponent implements OnInit {
               persons: any[]
             ) => {
 
+              const allPersons =
+                persons || [];
+
+              // 2. Bisheriger Merser-Export
+              //    bleibt unverändert bestehen.
               const merserContent =
                 this.generateMerserContent(
-                  persons || []
+                  allPersons
                 );
 
               if (
-                !merserContent
+                merserContent
+              ) {
+
+                const csvBlob =
+                  new Blob(
+                    [
+                      '\uFEFF' +
+                      merserContent
+                    ],
+                    {
+                      type:
+                        'text/csv;charset=utf-8'
+                    }
+                  );
+
+                this.downloadFile(
+                  csvBlob,
+                  `NeueHeimat_Merser_${dateKey}.csv`
+                );
+
+              } else {
+
+                console.warn(
+                  'Für den bisherigen Merser-Export wurden ' +
+                  'keine gültigen Datensätze gefunden.'
+                );
+
+              }
+
+              // 3. Neuer Merser-Export nach neuer Spaltenstruktur
+              const merserNewContent =
+                this.generateNewMerserContent(
+                  allPersons
+                );
+
+              if (
+                merserNewContent
+              ) {
+
+                const newCsvBlob =
+                  new Blob(
+                    [
+                      '\uFEFF' +
+                      merserNewContent
+                    ],
+                    {
+                      type:
+                        'text/csv;charset=utf-8'
+                    }
+                  );
+
+                this.downloadFile(
+                  newCsvBlob,
+                  `NeueHeimat_Merser_Neu_${dateKey}.csv`
+                );
+
+              } else {
+
+                console.warn(
+                  'Für den neuen Merser-Export wurden ' +
+                  'keine Datensätze gefunden.'
+                );
+
+              }
+
+              if (
+                !merserContent &&
+                !merserNewContent
               ) {
 
                 alert(
                   'Die Datenbanksicherung wurde erstellt. ' +
                   'Es wurden jedoch keine Personen mit den vorgesehenen ' +
-                  'Versorgungsordnungen und gültigen Rentendaten gefunden.'
+                  'Versorgungsordnungen für den Merser-Export gefunden.'
                 );
 
-                return;
               }
-
-              const csvBlob =
-                new Blob(
-                  [
-                    '\uFEFF' +
-                    merserContent
-                  ],
-                  {
-                    type:
-                      'text/csv;charset=utf-8'
-                  }
-                );
-
-              this.downloadFile(
-                csvBlob,
-                `NeueHeimat_Merser_${dateKey}.csv`
-              );
 
             },
 
@@ -699,13 +753,13 @@ export class ListPersonComponent implements OnInit {
             ) => {
 
               console.error(
-                'Fehler beim Erstellen des Merser-Exports:',
+                'Fehler beim Erstellen der Merser-Exporte:',
                 error
               );
 
               alert(
                 'Die Datenbanksicherung wurde erstellt, ' +
-                'aber der Merser-Export konnte nicht erzeugt werden.'
+                'aber die Merser-Exporte konnten nicht erzeugt werden.'
               );
 
             }
@@ -889,6 +943,418 @@ export class ListPersonComponent implements OnInit {
     return lines.join(
       '\r\n'
     );
+  }
+
+
+  /**
+   * Neuer Merser-Export nach der neuen Übergabestruktur.
+   *
+   * Mapping:
+   * OriginalIDNun           -> personalnummer
+   * USC                     -> leer
+   * Surname                 -> name ab dem ersten Leerzeichen
+   * FirstName               -> name bis zum ersten Leerzeichen
+   * Gender                  -> geschlecht als F / M
+   * BirthDate               -> geburtsdatum
+   * SubDivisionCode         -> gesellschaft
+   * Versorgungsschlüssel    -> versorgungsordnung
+   * MembershipDate1         -> unternehmenseintritt
+   * PensionableServiceDate  -> ruhegeldfaehigAb
+   * PensionPromiseDate      -> ruhegeldfaehigAb
+   * TerminationDate1        -> unternehmensaustritt
+   * GesVers                 -> aktuellste gesamtversorgung
+   * SVRente                 -> aktuellste gesetzlicheSVRente
+   * LVRente                 -> aktuellste renteAusBefrLebensvers
+   * DeductionAmount         -> leer
+   * ZusRente                -> aktuellste zusatzrente
+   * Pension                 -> aktuellste pension
+   * ClientBenefit1DB        -> aktuellste betrRente
+   * MinimumBenefit1DB       -> aktuellste bezugsart
+   *
+   * Personen ohne gültige Rentenperiode werden NICHT verworfen.
+   * Die rentenbezogenen Felder bleiben in diesem Fall leer.
+   */
+  private generateNewMerserContent(
+    persons: any[]
+  ): string {
+
+    const filteredPersons =
+      persons.filter(
+        (person: any) => {
+
+          const versorgungsordnung =
+            Number(
+              person?.versorgungsordnung
+            );
+
+          return (
+            this.merserVersorgungsordnungen
+              .includes(
+                versorgungsordnung
+              )
+          );
+
+        }
+      );
+
+    if (
+      filteredPersons.length === 0
+    ) {
+      return '';
+    }
+
+    const rows =
+      filteredPersons.map(
+        (person: any) => {
+
+          const latestRente =
+            this.getLatestRentenPeriode(
+              person
+            );
+
+          const nameParts =
+            this.splitMerserName(
+              person?.name
+            );
+
+          return {
+
+            OriginalIDNun:
+              this.formatMerserText(
+                person?.personalnummer
+              ),
+
+            USC:
+              '',
+
+            Surname:
+              nameParts.surname,
+
+            FirstName:
+              nameParts.firstName,
+
+            Gender:
+              this.formatMerserGender(
+                person?.geschlecht
+              ),
+
+            BirthDate:
+              this.formatMerserDate(
+                person?.geburtsdatum
+              ),
+
+            SubDivisionCode:
+              this.formatMerserText(
+                person?.gesellschaft
+              ),
+
+            'Versorgungsschlüssel':
+              this.formatMerserText(
+                person?.versorgungsordnung
+              ),
+
+            MembershipDate1:
+              this.formatMerserDate(
+                person?.unternehmenseintritt
+              ),
+
+            PensionableServiceDate:
+              this.formatMerserDate(
+                person?.ruhegeldfaehigAb
+              ),
+
+            PensionPromiseDate:
+              this.formatMerserDate(
+                person?.ruhegeldfaehigAb
+              ),
+
+            TerminationDate1:
+              this.formatMerserDate(
+                person?.unternehmensaustritt
+              ),
+
+            GesVers:
+              this.formatMerserOptionalNumber(
+                latestRente?.gesamtversorgung
+              ),
+
+            SVRente:
+              this.formatMerserOptionalNumber(
+                latestRente?.gesetzlicheSVRente
+              ),
+
+            LVRente:
+              this.formatMerserOptionalNumber(
+                latestRente?.renteAusBefrLebensvers
+              ),
+
+            DeductionAmount:
+              '',
+
+            ZusRente:
+              this.formatMerserOptionalNumber(
+                latestRente?.zusatzrente
+              ),
+
+            Pension:
+              this.formatMerserOptionalNumber(
+                latestRente?.pension
+              ),
+
+            ClientBenefit1DB:
+              this.formatMerserOptionalNumber(
+                latestRente?.betrRente
+              ),
+
+            MinimumBenefit1DB:
+              this.formatMerserText(
+                latestRente?.bezugsart
+              )
+
+          };
+
+        }
+      );
+
+    return Papa.unparse(
+      rows,
+      {
+        delimiter: ';',
+        newline: '\r\n',
+        header: true
+      }
+    );
+  }
+
+
+  /**
+   * Namensregel für den neuen Merser-Export:
+   * Alles bis zum ersten Leerzeichen = FirstName.
+   * Alles danach = Surname.
+   *
+   * Beispiel:
+   * "Max Peter Mustermann"
+   * FirstName = "Max"
+   * Surname   = "Peter Mustermann"
+   */
+  private splitMerserName(
+    value: any
+  ): {
+    firstName: string;
+    surname: string;
+  } {
+
+    const fullName =
+      String(
+        value || ''
+      ).trim();
+
+    if (
+      !fullName
+    ) {
+
+      return {
+        firstName: '',
+        surname: ''
+      };
+
+    }
+
+    const firstSpace =
+      fullName.indexOf(
+        ' '
+      );
+
+    if (
+      firstSpace === -1
+    ) {
+
+      return {
+        firstName: fullName,
+        surname: ''
+      };
+
+    }
+
+    return {
+
+      firstName:
+        fullName
+          .substring(
+            0,
+            firstSpace
+          )
+          .trim(),
+
+      surname:
+        fullName
+          .substring(
+            firstSpace + 1
+          )
+          .trim()
+
+    };
+  }
+
+
+  /**
+   * Geschlecht auf die von Merser gewünschte Darstellung abbilden.
+   * weiblich / w / f / female -> F
+   * männlich / maennlich / m / male -> M
+   * Unbekannte oder leere Werte bleiben leer.
+   */
+  private formatMerserGender(
+    value: any
+  ): string {
+
+    const gender =
+      String(
+        value || ''
+      )
+        .trim()
+        .toLowerCase();
+
+    if (
+      gender === 'weiblich' ||
+      gender === 'w' ||
+      gender === 'f' ||
+      gender === 'female'
+    ) {
+      return 'F';
+    }
+
+    if (
+      gender === 'männlich' ||
+      gender === 'maennlich' ||
+      gender === 'm' ||
+      gender === 'male'
+    ) {
+      return 'M';
+    }
+
+    return '';
+  }
+
+
+  /**
+   * Textwert für die neue Merser-Datei.
+   * Nicht vorhandene Werte bleiben leer.
+   */
+  private formatMerserText(
+    value: any
+  ): string {
+
+    if (
+      value === null ||
+      value === undefined ||
+      value === ''
+    ) {
+      return '';
+    }
+
+    return String(
+      value
+    ).trim();
+  }
+
+
+  /**
+   * Numerischer Wert für die neue Merser-Datei.
+   *
+   * Anders als beim bisherigen Export wird ein fehlender Wert
+   * nicht als 0 ausgegeben, sondern bleibt leer.
+   */
+  private formatMerserOptionalNumber(
+    value: any
+  ): string {
+
+    if (
+      value === null ||
+      value === undefined ||
+      value === ''
+    ) {
+      return '';
+    }
+
+    let normalizedValue =
+      value;
+
+    if (
+      typeof normalizedValue === 'string'
+    ) {
+
+      normalizedValue =
+        normalizedValue.trim();
+
+      if (
+        normalizedValue.includes(',') &&
+        normalizedValue.includes('.')
+      ) {
+
+        normalizedValue =
+          normalizedValue
+            .replace(
+              /\./g,
+              ''
+            )
+            .replace(
+              ',',
+              '.'
+            );
+
+      } else if (
+        normalizedValue.includes(',')
+      ) {
+
+        normalizedValue =
+          normalizedValue.replace(
+            ',',
+            '.'
+          );
+
+      }
+
+    }
+
+    const numberValue =
+      Number(
+        normalizedValue
+      );
+
+    if (
+      !Number.isFinite(
+        numberValue
+      )
+    ) {
+      return '';
+    }
+
+    if (
+      Number.isInteger(
+        numberValue
+      )
+    ) {
+
+      return String(
+        numberValue
+      );
+
+    }
+
+    return numberValue
+      .toFixed(4)
+      .replace(
+        /0+$/,
+        ''
+      )
+      .replace(
+        /\.$/,
+        ''
+      )
+      .replace(
+        '.',
+        ','
+      );
   }
 
 
