@@ -1,21 +1,37 @@
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->
-<!-- * * * * * * * to get started with your project! * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- ================================================= -->
+<!-- GLOBALER HEADER -->
+<!-- Nur sichtbar, wenn ein Benutzer angemeldet ist -->
+<!-- ================================================= -->
+
+<div
+  class="app-header"
+  *ngIf="authService.isLoggedIn()"
+>
+
+  <div class="user-info">
+
+    <span>
+      Angemeldet als:
+      <strong>
+        {{ authService.getUsername() }}
+      </strong>
+    </span>
+
+    <button
+      type="button"
+      class="logout-button"
+      (click)="logout()"
+    >
+      Abmelden
+    </button>
+
+  </div>
+
+</div>
 
 
+<!-- ================================================= -->
+<!-- ANWENDUNG -->
+<!-- ================================================= -->
 
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
-
-<router-outlet/>
+<router-outlet></router-outlet>

@@ -1,82 +1,9 @@
-
-/**
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { PersonService } from '../create-user/person.service';
-
-@Component({
-  selector: 'app-show-pensions-daten',
-  templateUrl: './show-pensions-daten.component.html',
-  styleUrls: ['./show-pensions-daten.component.css']
-})
-export class ShowPensionsDatenComponent implements OnInit {
-  editMode: boolean = false; // Flag to track edit mode
-  pensionsDaten: any = {
-    
-    ratierlicherAnspruch: '',
-    prozentsatzTeiluebertragung: '',
-    pensionsfaehigesDurchschnittsgehaltVA: '',
-    sozVersPflJahresgehaltVA: '',
-    ruhegeldfaehigesDurchschnittsgehalt: '',
-    durchschnittsgehaltNachSozialplan: '',
-    teilzeitgrad: '',
-    sozVersFreieJahreAb20: '',
-    schwerbehindert: '',
-    anzahlKinder: '',
-    steuerklasse: '',
-    bemerkung: ''
-    // Add more properties as needed
-  };
-
-  constructor(private route: ActivatedRoute, private personService: PersonService) {}
-
-  ngOnInit() {
-    
-    const personId = this.route.snapshot.params['id'];
-    const pensionsDatenId = this.route.snapshot.params['pensionsDatenId'];
-    console.log(personId);
-    console.log(pensionsDatenId);
-    this.personService.getPensionsDaten(personId, pensionsDatenId).subscribe(
-      (data: any) => {
-        this.pensionsDaten = data;
-      },
-      (error: any) => {
-        console.error('Error fetching pensionsdaten:', error);
-        // Handle error as needed
-      }
-    );
-  }
-
-  toggleEditMode() {
-    this.editMode = !this.editMode;
-  }
-
-  saveChanges() {
-    const personId = this.route.snapshot.params['id'];
-    //const pensionsDatenId = this.pensionsDaten._id; // Assuming the ID is stored in the _id attribute
-    const pensionsDatenId = this.route.snapshot.params['pensionsDatenId'];
-
-    // Call the service to update the pensionsDaten
-    this.personService.updatePensionsDaten(personId, pensionsDatenId, this.pensionsDaten).subscribe(
-      (updatedPensionsDaten: any) => {
-        // Update the pensionsDaten
-        this.pensionsDaten = updatedPensionsDaten;
-        // Exit edit mode after saving changes
-        this.editMode = false;
-      },
-      (error: any) => {
-        console.error('Error updating pensionsDaten:', error);
-        // Handle error as needed
-      }
-    );
-  }
-}
-
-*/
-
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { PersonService } from '../create-user/person.service';
+import { AuthService } from '../auth/auth.service';
+
 
 @Component({
   selector: 'app-show-pensions-daten',
@@ -84,7 +11,9 @@ import { PersonService } from '../create-user/person.service';
   styleUrls: ['./show-pensions-daten.component.css']
 })
 export class ShowPensionsDatenComponent implements OnInit {
-  editMode: boolean = false; // Flag to track edit mode
+
+  editMode: boolean = false;
+
   pensionsDaten: any = {
     ratierlicherAnspruch: '',
     prozentsatzTeiluebertragung: '',
@@ -98,78 +27,231 @@ export class ShowPensionsDatenComponent implements OnInit {
     anzahlKinder: '',
     steuerklasse: '',
     bemerkung: ''
-    // Add more properties as needed
   };
 
-  constructor(private route: ActivatedRoute, private router: Router, private personService: PersonService) {}
 
-  ngOnInit() {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private personService: PersonService,
+    private authService: AuthService
+  ) {}
+
+
+  // =====================================================
+  // ROLLENSTEUERUNG
+  // =====================================================
+
+  get isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
+
+  // =====================================================
+  // INITIALISIERUNG
+  // =====================================================
+
+  ngOnInit(): void {
     this.fetchPensionsDaten();
   }
 
-  fetchPensionsDaten() {
-    const personId = this.route.snapshot.params['id'];
-    const pensionsDatenId = this.route.snapshot.params['pensionsDatenId'];
 
-    this.personService.getPensionsDaten(personId, pensionsDatenId).subscribe(
-      (data: any) => {
-        this.pensionsDaten = data;
-      },
-      (error: any) => {
-        console.error('Error fetching pensionsdaten:', error);
-        // Handle error as needed
-      }
-    );
-  }
+  // =====================================================
+  // PENSIONSDATEN LADEN
+  // ADMIN + READONLY
+  // =====================================================
 
-  toggleEditMode() {
-    this.editMode = !this.editMode;
-  }
+  fetchPensionsDaten(): void {
 
-  saveChanges() {
-    const personId = this.route.snapshot.params['id'];
-    const pensionsDatenId = this.route.snapshot.params['pensionsDatenId'];
+    const personId =
+      this.route.snapshot.params['id'];
 
-    // Call the service to update the pensionsDaten
-    this.personService.updatePensionsDaten(personId, pensionsDatenId, this.pensionsDaten).subscribe(
-      (updatedPensionsDaten: any) => {
-        // Update the pensionsDaten
-        this.pensionsDaten = updatedPensionsDaten;
-        // Exit edit mode after saving changes
-        this.editMode = false;
-        
-        // Fetch the updated data again after saving
-        this.fetchPensionsDaten();
-      },
-      (error: any) => {
-        console.error('Error updating pensionsDaten:', error);
-        // Handle error as needed
-      }
-    );
-  }
+    const pensionsDatenId =
+      this.route.snapshot.params['pensionsDatenId'];
 
-  deletePensionsDaten() {
-    const personId = this.route.snapshot.params['id'];
-    const pensionsDatenId = this.route.snapshot.params['pensionsDatenId'];
 
-    this.personService.deletePensionsDaten(personId, pensionsDatenId).subscribe(
-      () => {
-        console.log('PensionsDaten deleted successfully');
-        alert('PensionsDaten gelöscht');
-        
-        // Redirect to person detail or any other desired route after deletion
-        this.router.navigate(['/person', personId]);
-      },
-      (error: any) => {
-        console.error('Error deleting PensionsDaten:', error);
-      }
-    );
-  }
+    this.personService
+      .getPensionsDaten(
+        personId,
+        pensionsDatenId
+      )
+      .subscribe({
 
-  navigateToPersonDetail(){
-    const personId = this.route.snapshot.params['id'];
-    this.router.navigate(['/person', personId]);
+        next: (data: any) => {
+
+          this.pensionsDaten =
+            data;
+
+        },
+
+        error: (error: any) => {
+
+          console.error(
+            'Error fetching pensionsdaten:',
+            error
+          );
+
+        }
+
+      });
 
   }
-  
+
+
+  // =====================================================
+  // BEARBEITUNGSMODUS
+  // NUR ADMIN
+  // =====================================================
+
+  toggleEditMode(): void {
+
+    if (!this.isAdmin) {
+      return;
+    }
+
+    this.editMode =
+      !this.editMode;
+
+  }
+
+
+  // =====================================================
+  // ÄNDERUNGEN SPEICHERN
+  // NUR ADMIN
+  // =====================================================
+
+  saveChanges(): void {
+
+    if (!this.isAdmin) {
+      return;
+    }
+
+
+    const personId =
+      this.route.snapshot.params['id'];
+
+    const pensionsDatenId =
+      this.route.snapshot.params['pensionsDatenId'];
+
+
+    this.personService
+      .updatePensionsDaten(
+        personId,
+        pensionsDatenId,
+        this.pensionsDaten
+      )
+      .subscribe({
+
+        next: (
+          updatedPensionsDaten: any
+        ) => {
+
+          this.pensionsDaten =
+            updatedPensionsDaten;
+
+          this.editMode =
+            false;
+
+          this.fetchPensionsDaten();
+
+        },
+
+        error: (error: any) => {
+
+          console.error(
+            'Error updating pensionsDaten:',
+            error
+          );
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // PENSIONSDATEN LÖSCHEN
+  // NUR ADMIN
+  // =====================================================
+
+  deletePensionsDaten(): void {
+
+    if (!this.isAdmin) {
+      return;
+    }
+
+
+    const personId =
+      this.route.snapshot.params['id'];
+
+    const pensionsDatenId =
+      this.route.snapshot.params['pensionsDatenId'];
+
+
+    const sicher =
+      confirm(
+        'Sollen diese Pensionsdaten wirklich gelöscht werden?'
+      );
+
+    if (!sicher) {
+      return;
+    }
+
+
+    this.personService
+      .deletePensionsDaten(
+        personId,
+        pensionsDatenId
+      )
+      .subscribe({
+
+        next: () => {
+
+          console.log(
+            'PensionsDaten deleted successfully'
+          );
+
+          alert(
+            'PensionsDaten gelöscht'
+          );
+
+          this.router.navigate([
+            '/person',
+            personId
+          ]);
+
+        },
+
+        error: (error: any) => {
+
+          console.error(
+            'Error deleting PensionsDaten:',
+            error
+          );
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // ZURÜCK ZUM STAMMDATENBEREICH
+  // ADMIN + READONLY
+  // =====================================================
+
+  navigateToPersonDetail(): void {
+
+    const personId =
+      this.route.snapshot.params['id'];
+
+    this.router.navigate([
+      '/person',
+      personId
+    ]);
+
+  }
+
 }

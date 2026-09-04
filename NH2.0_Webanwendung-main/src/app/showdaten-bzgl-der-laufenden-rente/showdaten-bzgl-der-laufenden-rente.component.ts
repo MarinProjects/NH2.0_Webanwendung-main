@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { PersonService } from '../create-user/person.service';
+import { AuthService } from '../auth/auth.service';
+
 
 @Component({
   selector: 'app-showdaten-bzgl-der-laufenden-rente',
@@ -8,9 +11,12 @@ import { PersonService } from '../create-user/person.service';
   styleUrls: ['./showdaten-bzgl-der-laufenden-rente.component.css']
 })
 export class ShowdatenBzglDerLaufendenRenteComponent implements OnInit {
-  editMode: boolean = false; // Flag to track edit mode
+
+  editMode: boolean = false;
+
   datenBzglDerLaufendenRente: any = {
-    gueltigVonBis: '',
+    gueltigVon: '',
+    gueltigBis: '',
     eingabedatum: '',
     gesamtversorgung: '',
     andereAnzurechnendeRente: '',
@@ -32,79 +38,231 @@ export class ShowdatenBzglDerLaufendenRenteComponent implements OnInit {
     beitragFuerKrankenvers: '',
     rentenartfaktor: '',
     teilrentenfaktor: ''
-    // Add more properties as needed
   };
 
-  constructor(private route: ActivatedRoute, private router: Router, private personService: PersonService) {}
 
-  ngOnInit() {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private personService: PersonService,
+    private authService: AuthService
+  ) {}
+
+
+  // =====================================================
+  // ROLLENSTEUERUNG
+  // =====================================================
+
+  get isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
+
+  // =====================================================
+  // INITIALISIERUNG
+  // =====================================================
+
+  ngOnInit(): void {
     this.fetchDatenBzglDerLaufendenRente();
   }
 
-  fetchDatenBzglDerLaufendenRente() {
-    const personId = this.route.snapshot.params['id'];
-    const datenBzglDerLaufendenRenteId = this.route.snapshot.params['datenBzglDerLaufendenRenteId'];
 
-    this.personService.getDatenBzglDerLaufendenRente(personId, datenBzglDerLaufendenRenteId).subscribe(
-      (data: any) => {
-        this.datenBzglDerLaufendenRente = data;
-      },
-      (error: any) => {
-        console.error('Error fetching datenBzglDerLaufendenRente:', error);
-        // Handle error as needed
-      }
-    );
-  }
+  // =====================================================
+  // DATEN LADEN
+  // ADMIN + READONLY
+  // =====================================================
 
-  toggleEditMode() {
-    this.editMode = !this.editMode;
-  }
+  fetchDatenBzglDerLaufendenRente(): void {
 
-  saveChanges() {
-    const personId = this.route.snapshot.params['id'];
-    const datenBzglDerLaufendenRenteId = this.route.snapshot.params['datenBzglDerLaufendenRenteId'];
+    const personId =
+      this.route.snapshot.params['id'];
 
-    // Call the service to update the datenBzglDerLaufendenRente
-    this.personService.updateDatenBzglDerLaufendenRente(personId, datenBzglDerLaufendenRenteId, this.datenBzglDerLaufendenRente).subscribe(
-      (updatedDatenBzglDerLaufendenRente: any) => {
-        // Update the datenBzglDerLaufendenRente
-        this.datenBzglDerLaufendenRente = updatedDatenBzglDerLaufendenRente;
-        // Exit edit mode after saving changes
-        this.editMode = false;
-        
-        // Fetch the updated data again after saving
-        this.fetchDatenBzglDerLaufendenRente();
-      },
-      (error: any) => {
-        console.error('Error updating datenBzglDerLaufendenRente:', error);
-        // Handle error as needed
-      }
-    );
-  }
+    const datenBzglDerLaufendenRenteId =
+      this.route.snapshot.params['datenBzglDerLaufendenRenteId'];
 
-  deleteDatenBzglDerLaufendenRente() {
-    const personId = this.route.snapshot.params['id'];
-    const datenBzglDerLaufendenRenteId = this.route.snapshot.params['datenBzglDerLaufendenRenteId'];
 
-    this.personService.deleteDatenBzglDerLaufendenRente(personId, datenBzglDerLaufendenRenteId).subscribe(
-      () => {
-        console.log('DatenBzglDerLaufendenRente deleted successfully');
-        alert('DatenBzglDerLaufendenRente gelöscht');
-        
-        // Redirect to person detail or any other desired route after deletion
-        this.router.navigate(['/person', personId]);
-      },
-      (error: any) => {
-        console.error('Error deleting DatenBzglDerLaufendenRente:', error);
-      }
-    );
-  }
+    this.personService
+      .getDatenBzglDerLaufendenRente(
+        personId,
+        datenBzglDerLaufendenRenteId
+      )
+      .subscribe({
 
-  navigateToPersonDetail(){
-    const personId = this.route.snapshot.params['id'];
-    this.router.navigate(['/person', personId]);
+        next: (data: any) => {
+
+          this.datenBzglDerLaufendenRente =
+            data;
+
+        },
+
+        error: (error: any) => {
+
+          console.error(
+            'Error fetching datenBzglDerLaufendenRente:',
+            error
+          );
+
+        }
+
+      });
 
   }
-  
+
+
+  // =====================================================
+  // BEARBEITUNGSMODUS
+  // NUR ADMIN
+  // =====================================================
+
+  toggleEditMode(): void {
+
+    if (!this.isAdmin) {
+      return;
+    }
+
+    this.editMode =
+      !this.editMode;
+
+  }
+
+
+  // =====================================================
+  // ÄNDERUNGEN SPEICHERN
+  // NUR ADMIN
+  // =====================================================
+
+  saveChanges(): void {
+
+    if (!this.isAdmin) {
+      return;
+    }
+
+
+    const personId =
+      this.route.snapshot.params['id'];
+
+    const datenBzglDerLaufendenRenteId =
+      this.route.snapshot.params['datenBzglDerLaufendenRenteId'];
+
+
+    this.personService
+      .updateDatenBzglDerLaufendenRente(
+        personId,
+        datenBzglDerLaufendenRenteId,
+        this.datenBzglDerLaufendenRente
+      )
+      .subscribe({
+
+        next: (
+          updatedDatenBzglDerLaufendenRente: any
+        ) => {
+
+          this.datenBzglDerLaufendenRente =
+            updatedDatenBzglDerLaufendenRente;
+
+          this.editMode =
+            false;
+
+          this.fetchDatenBzglDerLaufendenRente();
+
+        },
+
+        error: (error: any) => {
+
+          console.error(
+            'Error updating datenBzglDerLaufendenRente:',
+            error
+          );
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // DATENSATZ LÖSCHEN
+  // NUR ADMIN
+  // =====================================================
+
+  deleteDatenBzglDerLaufendenRente(): void {
+
+    if (!this.isAdmin) {
+      return;
+    }
+
+
+    const personId =
+      this.route.snapshot.params['id'];
+
+    const datenBzglDerLaufendenRenteId =
+      this.route.snapshot.params['datenBzglDerLaufendenRenteId'];
+
+
+    const sicher =
+      confirm(
+        'Sollen diese Daten bzgl. der laufenden Rente wirklich gelöscht werden?'
+      );
+
+    if (!sicher) {
+      return;
+    }
+
+
+    this.personService
+      .deleteDatenBzglDerLaufendenRente(
+        personId,
+        datenBzglDerLaufendenRenteId
+      )
+      .subscribe({
+
+        next: () => {
+
+          console.log(
+            'DatenBzglDerLaufendenRente deleted successfully'
+          );
+
+          alert(
+            'Daten bzgl. der laufenden Rente gelöscht'
+          );
+
+          this.router.navigate([
+            '/person',
+            personId
+          ]);
+
+        },
+
+        error: (error: any) => {
+
+          console.error(
+            'Error deleting DatenBzglDerLaufendenRente:',
+            error
+          );
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // ZURÜCK ZUM STAMMDATENBEREICH
+  // ADMIN + READONLY
+  // =====================================================
+
+  navigateToPersonDetail(): void {
+
+    const personId =
+      this.route.snapshot.params['id'];
+
+    this.router.navigate([
+      '/person',
+      personId
+    ]);
+
+  }
+
 }
-

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { PersonService } from '../create-user/person.service';
+import { AuthService } from '../auth/auth.service';
+
 
 @Component({
   selector: 'app-show-personaldaten',
@@ -8,82 +11,233 @@ import { PersonService } from '../create-user/person.service';
   styleUrls: ['./show-personaldaten.component.css']
 })
 export class ShowPersonaldatenComponent implements OnInit {
-  editMode: boolean = false; // Flag to track edit mode
+
+  editMode: boolean = false;
+
   personaldaten: any = {
     name: '',
     geburtsdatum: '',
     prozentsatz: ''
-    // Add more properties as needed
   };
 
-  constructor(private route: ActivatedRoute, private router: Router, private personService: PersonService) {}
 
-  ngOnInit() {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private personService: PersonService,
+    private authService: AuthService
+  ) {}
+
+
+  // =====================================================
+  // ROLLENSTEUERUNG
+  // =====================================================
+
+  get isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
+
+  // =====================================================
+  // INITIALISIERUNG
+  // =====================================================
+
+  ngOnInit(): void {
     this.fetchPersonalDaten();
   }
 
-  fetchPersonalDaten() {
-    const personId = this.route.snapshot.params['id'];
-    const personaldatenId = this.route.snapshot.params['personaldatenId'];
 
-    this.personService.getPersonalDaten(personId, personaldatenId).subscribe(
-      (data: any) => {
-        this.personaldaten = data;
-      },
-      (error: any) => {
-        console.error('Error fetching personaldaten:', error);
-        // Handle error as needed
-      }
-    );
+  // =====================================================
+  // PERSONALDATEN LADEN
+  // ADMIN + READONLY
+  // =====================================================
+
+  fetchPersonalDaten(): void {
+
+    const personId =
+      this.route.snapshot.params['id'];
+
+    const personaldatenId =
+      this.route.snapshot.params['personaldatenId'];
+
+
+    this.personService
+      .getPersonalDaten(
+        personId,
+        personaldatenId
+      )
+      .subscribe({
+
+        next: (data: any) => {
+
+          this.personaldaten = data;
+
+        },
+
+        error: (error: any) => {
+
+          console.error(
+            'Error fetching personaldaten:',
+            error
+          );
+
+        }
+
+      });
+
   }
 
-  toggleEditMode() {
+
+  // =====================================================
+  // BEARBEITUNGSMODUS
+  // NUR ADMIN
+  // =====================================================
+
+  toggleEditMode(): void {
+
+    if (!this.isAdmin) {
+      return;
+    }
+
     this.editMode = !this.editMode;
+
   }
 
-  saveChanges() {
-    const personId = this.route.snapshot.params['id'];
-    const personaldatenId = this.route.snapshot.params['personaldatenId'];
 
-    // Call the service to update the personaldaten
-    this.personService.updatePersonalDaten(personId, personaldatenId, this.personaldaten).subscribe(
-      (updatedPersonalDaten: any) => {
-        // Update the personaldaten
-        this.personaldaten = updatedPersonalDaten;
-        // Exit edit mode after saving changes
-        this.editMode = false;
-        
-        // Fetch the updated data again after saving
-        this.fetchPersonalDaten();
-      },
-      (error: any) => {
-        console.error('Error updating personaldaten:', error);
-        // Handle error as needed
-      }
+  // =====================================================
+  // ÄNDERUNGEN SPEICHERN
+  // NUR ADMIN
+  // =====================================================
+
+  saveChanges(): void {
+
+    if (!this.isAdmin) {
+      return;
+    }
+
+
+    const personId =
+      this.route.snapshot.params['id'];
+
+    const personaldatenId =
+      this.route.snapshot.params['personaldatenId'];
+
+
+    this.personService
+      .updatePersonalDaten(
+        personId,
+        personaldatenId,
+        this.personaldaten
+      )
+      .subscribe({
+
+        next: (updatedPersonalDaten: any) => {
+
+          this.personaldaten =
+            updatedPersonalDaten;
+
+          this.editMode =
+            false;
+
+          this.fetchPersonalDaten();
+
+        },
+
+        error: (error: any) => {
+
+          console.error(
+            'Error updating personaldaten:',
+            error
+          );
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // PERSONALDATEN LÖSCHEN
+  // NUR ADMIN
+  // =====================================================
+
+  deletePersonaldatenZumVerbliebenenAngehoerigen(): void {
+
+    if (!this.isAdmin) {
+      return;
+    }
+
+
+    const personId =
+      this.route.snapshot.params['id'];
+
+    const personaldatenId =
+      this.route.snapshot.params['personaldatenId'];
+
+
+    const sicher = confirm(
+      'Sollen diese Personaldaten zum verbliebenen Angehörigen wirklich gelöscht werden?'
     );
+
+    if (!sicher) {
+      return;
+    }
+
+
+    this.personService
+      .deletePersonaldatenZumVerbliebenenAngehoerigen(
+        personId,
+        personaldatenId
+      )
+      .subscribe({
+
+        next: () => {
+
+          console.log(
+            'Personaldaten zum verbliebenen Angehörigen deleted successfully'
+          );
+
+          alert(
+            'Personaldaten zum verbliebenen Angehörigen gelöscht'
+          );
+
+          this.router.navigate([
+            '/person',
+            personId
+          ]);
+
+        },
+
+        error: (error: any) => {
+
+          console.error(
+            'Error deleting Personaldaten zum verbliebenen Angehörigen:',
+            error
+          );
+
+        }
+
+      });
+
   }
 
-  deletePersonaldatenZumVerbliebenenAngehoerigen() {
-    const personId = this.route.snapshot.params['id'];
-    const personaldatenId = this.route.snapshot.params['personaldatenId'];
 
-    this.personService.deletePersonaldatenZumVerbliebenenAngehoerigen(personId, personaldatenId).subscribe(
-      () => {
-        console.log('Personaldaten zum verbliebenen Angehörigen deleted successfully');
-        alert('Personaldaten zum verbliebenen Angehörigen gelöscht');
-        
-        // Redirect to person detail or any other desired route after deletion
-        this.router.navigate(['/person', personId]);
-      },
-      (error: any) => {
-        console.error('Error deleting Personaldaten zum verbliebenen Angehörigen:', error);
-      }
-    );
-  }
+  // =====================================================
+  // ZURÜCK ZUM STAMMDATENBEREICH
+  // ADMIN + READONLY
+  // =====================================================
 
-  navigateToPersonDetail(){
-    const personId = this.route.snapshot.params['id'];
-    this.router.navigate(['/person', personId]);
+  navigateToPersonDetail(): void {
+
+    const personId =
+      this.route.snapshot.params['id'];
+
+    this.router.navigate([
+      '/person',
+      personId
+    ]);
 
   }
+
 }

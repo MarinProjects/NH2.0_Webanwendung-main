@@ -1,36 +1,134 @@
 <div class="ehegatten-daten-details">
-    <h2>Ehegattendaten Ansehen</h2>
-    <table>
-        <!-- Display fields -->
-        <tr>
-            <th>Name</th>
-            <td>
-                <span *ngIf="!editMode">{{ ehegattenDaten.name }}</span>
-                <input *ngIf="editMode" type="text" [(ngModel)]="ehegattenDaten.name">
-            </td>
-        </tr>
 
-        <tr>
-            <th>Geburtsdatum</th>
-            <td>
-                <span *ngIf="!editMode">{{ ehegattenDaten.geburtsdatum | germanDate }}</span>
-                <input *ngIf="editMode" type="date" [(ngModel)]="ehegattenDaten.geburtsdatum">
-            </td>
-        </tr>
+  <h2>
+    Ehegattendaten Ansehen
+  </h2>
 
-        <tr>
-            <th>Prozentsatz Witwen/Witwerrente</th>
-            <td>
-                <span *ngIf="!editMode">{{ ehegattenDaten.prozentsatzWitwenWitwerrente }}</span>
-                <input *ngIf="editMode" type="number" [(ngModel)]="ehegattenDaten.prozentsatzWitwenWitwerrente">
-            </td>
-        </tr>
-        <!-- Add more fields as needed -->
-    </table>
-    <button *ngIf="!editMode" (click)="toggleEditMode()">Edit Details</button>
-    <button *ngIf="editMode" (click)="saveChanges()">Save Changes</button>
-    <button (click)="deleteEhegattenDaten()">Daten zu Ehegatten löschen</button>
-    <button (click)="navigateToPersonDetail()">Zurück zu Stammdatenbereich</button>
+
+  <table>
+
+    <!-- ================================================= -->
+    <!-- NAME -->
+    <!-- ================================================= -->
+
+    <tr>
+
+      <th>
+        Name
+      </th>
+
+      <td>
+
+        <span *ngIf="!editMode">
+          {{ ehegattenDaten.name }}
+        </span>
+
+        <input
+          *ngIf="editMode"
+          type="text"
+          [(ngModel)]="ehegattenDaten.name"
+        >
+
+      </td>
+
+    </tr>
+
+
+    <!-- ================================================= -->
+    <!-- GEBURTSDATUM -->
+    <!-- ================================================= -->
+
+    <tr>
+
+      <th>
+        Geburtsdatum
+      </th>
+
+      <td>
+
+        <span *ngIf="!editMode">
+          {{ ehegattenDaten.geburtsdatum | germanDate }}
+        </span>
+
+        <input
+          *ngIf="editMode"
+          type="date"
+          [(ngModel)]="ehegattenDaten.geburtsdatum"
+        >
+
+      </td>
+
+    </tr>
+
+
+    <!-- ================================================= -->
+    <!-- PROZENTSATZ WITWEN-/WITWERRENTE -->
+    <!-- ================================================= -->
+
+    <tr>
+
+      <th>
+        Prozentsatz Witwen/Witwerrente
+      </th>
+
+      <td>
+
+        <span *ngIf="!editMode">
+          {{ ehegattenDaten.prozentsatzWitwenWitwerrente }}
+        </span>
+
+        <input
+          *ngIf="editMode"
+          type="number"
+          [(ngModel)]="ehegattenDaten.prozentsatzWitwenWitwerrente"
+        >
+
+      </td>
+
+    </tr>
+
+  </table>
+
+
+  <!-- ================================================= -->
+  <!-- NUR ADMIN -->
+  <!-- ================================================= -->
+
+  <ng-container *ngIf="isAdmin">
+
+    <button
+      *ngIf="!editMode"
+      (click)="toggleEditMode()"
+    >
+      Edit Details
+    </button>
+
+
+    <button
+      *ngIf="editMode"
+      (click)="saveChanges()"
+    >
+      Save Changes
+    </button>
+
+
+    <button
+      (click)="deleteEhegattenDaten()"
+    >
+      Daten zu Ehegatten löschen
+    </button>
+
+  </ng-container>
+
+
+  <!-- ================================================= -->
+  <!-- ADMIN + READONLY -->
+  <!-- ================================================= -->
+
+  <button
+    (click)="navigateToPersonDetail()"
+  >
+    Zurück zu Stammdatenbereich
+  </button>
 
 </div>
-

@@ -38,6 +38,14 @@ import { SolveniusComponent } from './solvenius/solvenius.component';
 import { ActivePensionersComponent } from './active-pensioners/active-pensioners.component';
 import { PersonaldatenVerstorbenerComponent } from './personaldaten-verstorbener/personaldaten-verstorbener.component';
 import { GermanDatePipe } from './pipes/german-date.pipe';
+import { LoginComponent } from './login/login.component';
+import {
+  HTTP_INTERCEPTORS
+} from '@angular/common/http';
+
+import {
+  AuthInterceptor
+} from './auth/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -74,7 +82,8 @@ import { GermanDatePipe } from './pipes/german-date.pipe';
     SolveniusComponent,
     ActivePensionersComponent,
     PersonaldatenVerstorbenerComponent,
-    GermanDatePipe
+    GermanDatePipe,
+    LoginComponent
     
     
     
@@ -86,7 +95,13 @@ import { GermanDatePipe } from './pipes/german-date.pipe';
     FormsModule,
     ReactiveFormsModule 
   ],
-  providers: [],
+  providers: [
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { PersonService } from '../create-user/person.service';
 import { ExportCsvService } from './export-csv.service';
+import { AuthService } from '../auth/auth.service';
 
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
@@ -15,7 +16,9 @@ import * as Papa from 'papaparse';
   styleUrls: ['./listperson.component.css']
 })
 export class ListPersonComponent implements OnInit {
+
   persons: any[] = [];
+
   personalnummerSearch: string = '';
   nameSearch: string = '';
 
@@ -44,40 +47,80 @@ export class ListPersonComponent implements OnInit {
     private router: Router,
     private exportCsvService: ExportCsvService,
     private personService: PersonService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
+
+
+  // =====================================================
+  // ROLLENSTEUERUNG
+  // =====================================================
+
+  get isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
 
   ngOnInit(): void {
     this.loadPersons();
   }
 
+
+  // =====================================================
+  // PERSONEN LADEN
+  // =====================================================
+
   loadPersons(): void {
+
     this.personService.getAllPersons().subscribe({
+
       next: (data: any[]) => {
         this.persons = data || [];
       },
+
       error: (error: any) => {
-        console.error('Error fetching persons:', error);
+
+        console.error(
+          'Error fetching persons:',
+          error
+        );
+
         this.persons = [];
       }
+
     });
   }
 
+
+  // =====================================================
+  // SUCHE PERSONALNUMMER
+  // =====================================================
+
   searchByPersonalnummer(): void {
-    const personalnummer = this.personalnummerSearch.trim();
+
+    const personalnummer =
+      this.personalnummerSearch.trim();
 
     if (personalnummer === '') {
+
       this.loadPersons();
+
       return;
     }
 
     this.personService
       .getPersonByPersonalnummer(personalnummer)
       .subscribe({
+
         next: (data: any) => {
-          this.persons = data ? [data] : [];
+
+          this.persons =
+            data ? [data] : [];
+
         },
+
         error: (error: any) => {
+
           console.error(
             'Error fetching person by personalnummer:',
             error
@@ -85,174 +128,329 @@ export class ListPersonComponent implements OnInit {
 
           this.persons = [];
         }
+
       });
   }
 
-  searchByName(): void {
-  const name = this.nameSearch.trim();
 
-  if (name === '') {
-    this.loadPersons();
-    return;
+  // =====================================================
+  // SUCHE NAME
+  // =====================================================
+
+  searchByName(): void {
+
+    const name =
+      this.nameSearch.trim();
+
+    if (name === '') {
+
+      this.loadPersons();
+
+      return;
+    }
+
+    this.personService
+      .getPersonsByName(name)
+      .subscribe({
+
+        next: (data: any[]) => {
+
+          this.persons =
+            data || [];
+
+        },
+
+        error: (error: any) => {
+
+          console.error(
+            'Error fetching persons by name:',
+            error
+          );
+
+          this.persons = [];
+
+        }
+
+      });
   }
 
-  this.personService
-    .getPersonsByName(name)
-    .subscribe({
-      next: (data: any[]) => {
-        this.persons = data || [];
-      },
 
-      error: (error: any) => {
-        console.error(
-          'Error fetching persons by name:',
-          error
-        );
-
-        this.persons = [];
-      }
-    });
-}
+  // =====================================================
+  // NAVIGATION
+  // =====================================================
 
   showPersonDetail(personId: string): void {
-    this.router.navigate(['/person', personId]);
+
+    this.router.navigate([
+      '/person',
+      personId
+    ]);
   }
+
 
   navigateToCreatePerson(): void {
-    this.router.navigate(['/createperson']);
+
+    this.router.navigate([
+      '/createperson'
+    ]);
   }
+
 
   navigateToPVAnpassung(): void {
-    this.router.navigate(['/PVAnpassung']);
+
+    this.router.navigate([
+      '/PVAnpassung'
+    ]);
   }
+
 
   navigateToRGOAnpassung(): void {
-    this.router.navigate(['/RGOAnpassung']);
+
+    this.router.navigate([
+      '/RGOAnpassung'
+    ]);
   }
+
 
   navigateToRGOHalbjahr1(): void {
-    this.router.navigate(['/RGOHalbjahr1']);
+
+    this.router.navigate([
+      '/RGOHalbjahr1'
+    ]);
   }
+
 
   navigateToRGOSerienbriefH1(): void {
-    this.router.navigate(['/rgo-halbjahr1-serienbriefe']);
+
+    this.router.navigate([
+      '/rgo-halbjahr1-serienbriefe'
+    ]);
   }
+
 
   navigateToRGOHalfYear2(): void {
-    this.router.navigate(['/rgo-halbjahr2']);
+
+    this.router.navigate([
+      '/rgo-halbjahr2'
+    ]);
   }
+
 
   navigateToRGOHalfYear2Letters(): void {
-    this.router.navigate(['/rgo-halbjahr2-serienbriefe']);
+
+    this.router.navigate([
+      '/rgo-halbjahr2-serienbriefe'
+    ]);
   }
+
 
   navigateToSolvenius(): void {
-    this.router.navigate(['/solvenius']);
+
+    this.router.navigate([
+      '/solvenius'
+    ]);
   }
+
 
   navigateToActivePensioners(): void {
-    this.router.navigate(['/active-pensioners']);
+
+    this.router.navigate([
+      '/active-pensioners'
+    ]);
   }
+
+
+  // =====================================================
+  // EXPORT
+  // =====================================================
 
   exportPersons(): void {
-    this.exportCsvService.exportPersonsToCsv();
+
+    this.exportCsvService
+      .exportPersonsToCsv();
   }
+
 
   exportRGOPersons(): void {
-    this.exportCsvService.exportRGOPersonsToCsv();
+
+    this.exportCsvService
+      .exportRGOPersonsToCsv();
   }
+
 
   exportImportFile(): void {
-    this.exportCsvService.exportImportFile();
+
+    this.exportCsvService
+      .exportImportFile();
   }
 
+
   exportAllPersonsToTxt(): void {
+
     const zip = new JSZip();
-    const currentDate = new Date();
+
+    const currentDate =
+      new Date();
 
     const formattedDate =
       `${currentDate.getFullYear()}-` +
-      `${String(currentDate.getMonth() + 1).padStart(2, '0')}-` +
-      `${String(currentDate.getDate()).padStart(2, '0')}`;
+      `${String(
+        currentDate.getMonth() + 1
+      ).padStart(2, '0')}-` +
+      `${String(
+        currentDate.getDate()
+      ).padStart(2, '0')}`;
 
-    this.persons.forEach((person: any) => {
-      const content = this.generateTXTContent(person);
-      const fileName = `person_${person.personalnummer}.txt`;
+    this.persons.forEach(
+      (person: any) => {
 
-      zip.file(fileName, content);
-    });
+        const content =
+          this.generateTXTContent(
+            person
+          );
 
-    zip.generateAsync({ type: 'blob' }).then((blob: Blob) => {
-      saveAs(blob, `${formattedDate}_personexport.zip`);
-    });
-  }
+        const fileName =
+          `person_${person.personalnummer}.txt`;
 
-  exportPersonDetailsToTxt(person: any): void {
-    const content = this.generateTXTContent(person);
-
-    const blob = new Blob(
-      [content],
-      {
-        type: 'text/plain;charset=utf-8'
+        zip.file(
+          fileName,
+          content
+        );
       }
     );
 
-    const fileName = `person_${person.personalnummer}.txt`;
+    zip.generateAsync({
+      type: 'blob'
+    }).then(
+      (blob: Blob) => {
 
-    this.downloadFile(blob, fileName);
+        saveAs(
+          blob,
+          `${formattedDate}_personexport.zip`
+        );
+      }
+    );
   }
 
-  private generateTXTContent(person: any): string {
+
+  exportPersonDetailsToTxt(
+    person: any
+  ): void {
+
+    const content =
+      this.generateTXTContent(
+        person
+      );
+
+    const blob =
+      new Blob(
+        [content],
+        {
+          type:
+            'text/plain;charset=utf-8'
+        }
+      );
+
+    const fileName =
+      `person_${person.personalnummer}.txt`;
+
+    this.downloadFile(
+      blob,
+      fileName
+    );
+  }
+
+
+  // =====================================================
+  // TXT ERZEUGEN
+  // =====================================================
+
+  private generateTXTContent(
+    person: any
+  ): string {
+
     let txtContent =
       `Personalstammsatz zu ${person.personalnummer}\r\n`;
 
-    const keys = Object.keys(person);
+    const keys =
+      Object.keys(person);
 
-    keys.forEach((key: string) => {
-      if (key === '_id' || key === '__v') {
-        return;
-      }
+    keys.forEach(
+      (key: string) => {
 
-      const value = person[key];
-
-      if (
-        value === null ||
-        value === undefined ||
-        value === ''
-      ) {
-        return;
-      }
-
-      if (Array.isArray(value)) {
-        if (value.length > 0) {
-          txtContent += `\r\nDaten zu ${key}\r\n`;
-
-          value.forEach((item: any) => {
-            txtContent +=
-              `- ${this.formatArrayItem(item)}\r\n`;
-          });
+        if (
+          key === '_id' ||
+          key === '__v'
+        ) {
+          return;
         }
 
-        return;
-      }
+        const value =
+          person[key];
 
-      txtContent +=
-        `${this.capitalizeFirstLetter(key)}: ` +
-        `${this.formatValue(value)}\r\n`;
-    });
+        if (
+          value === null ||
+          value === undefined ||
+          value === ''
+        ) {
+          return;
+        }
+
+        if (
+          Array.isArray(value)
+        ) {
+
+          if (
+            value.length > 0
+          ) {
+
+            txtContent +=
+              `\r\nDaten zu ${key}\r\n`;
+
+            value.forEach(
+              (item: any) => {
+
+                txtContent +=
+                  `- ${this.formatArrayItem(item)}\r\n`;
+
+              }
+            );
+
+          }
+
+          return;
+        }
+
+        txtContent +=
+          `${this.capitalizeFirstLetter(key)}: ` +
+          `${this.formatValue(value)}\r\n`;
+
+      }
+    );
 
     return txtContent;
   }
 
-  private capitalizeFirstLetter(value: string): string {
+
+  private capitalizeFirstLetter(
+    value: string
+  ): string {
+
     if (!value) {
       return '';
     }
 
-    return value.charAt(0).toUpperCase() + value.slice(1);
+    return (
+      value.charAt(0).toUpperCase() +
+      value.slice(1)
+    );
   }
 
-  private formatValue(value: any): string {
+
+  private formatValue(
+    value: any
+  ): string {
+
     if (
       value === null ||
       value === undefined ||
@@ -261,44 +459,87 @@ export class ListPersonComponent implements OnInit {
       return '';
     }
 
-    if (this.isDateValue(value)) {
+    if (
+      this.isDateValue(value)
+    ) {
       return this.formatDate(value);
     }
 
-    if (typeof value === 'boolean') {
-      return value ? 'Ja' : 'Nein';
+    if (
+      typeof value === 'boolean'
+    ) {
+      return value
+        ? 'Ja'
+        : 'Nein';
     }
 
     return String(value);
   }
 
-  private isDateValue(value: any): boolean {
-    if (value instanceof Date) {
+
+  private isDateValue(
+    value: any
+  ): boolean {
+
+    if (
+      value instanceof Date
+    ) {
       return true;
     }
 
-    if (typeof value === 'string') {
-      return /^\d{4}-\d{2}-\d{2}T/.test(value);
+    if (
+      typeof value === 'string'
+    ) {
+
+      return /^\d{4}-\d{2}-\d{2}T/
+        .test(value);
+
     }
 
     return false;
   }
 
-  private formatDate(value: any): string {
-    const date = new Date(value);
 
-    if (isNaN(date.getTime())) {
+  private formatDate(
+    value: any
+  ): string {
+
+    const date =
+      new Date(value);
+
+    if (
+      isNaN(date.getTime())
+    ) {
       return String(value);
     }
 
-    const day = String(date.getUTCDate()).padStart(2, '0');
-    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-    const year = date.getUTCFullYear();
+    const day =
+      String(
+        date.getUTCDate()
+      ).padStart(
+        2,
+        '0'
+      );
+
+    const month =
+      String(
+        date.getUTCMonth() + 1
+      ).padStart(
+        2,
+        '0'
+      );
+
+    const year =
+      date.getUTCFullYear();
 
     return `${day}.${month}.${year}`;
   }
 
-  private formatArrayItem(item: any): string {
+
+  private formatArrayItem(
+    item: any
+  ): string {
+
     if (
       item === null ||
       item === undefined
@@ -306,36 +547,57 @@ export class ListPersonComponent implements OnInit {
       return '';
     }
 
-    if (typeof item !== 'object') {
-      return this.formatValue(item);
+    if (
+      typeof item !== 'object'
+    ) {
+      return this.formatValue(
+        item
+      );
     }
 
     let formattedItem = '';
 
-    Object.keys(item).forEach((key: string) => {
-      if (key === '_id' || key === '__v') {
-        return;
-      }
+    Object.keys(item)
+      .forEach(
+        (key: string) => {
 
-      const value = item[key];
+          if (
+            key === '_id' ||
+            key === '__v'
+          ) {
+            return;
+          }
 
-      if (
-        value === null ||
-        value === undefined ||
-        value === ''
-      ) {
-        return;
-      }
+          const value =
+            item[key];
 
-      const separator = formattedItem === '' ? '' : ', ';
+          if (
+            value === null ||
+            value === undefined ||
+            value === ''
+          ) {
+            return;
+          }
 
-      formattedItem +=
-        `${separator}${this.capitalizeFirstLetter(key)}: ` +
-        `${this.formatValue(value)}`;
-    });
+          const separator =
+            formattedItem === ''
+              ? ''
+              : ', ';
+
+          formattedItem +=
+            `${separator}${this.capitalizeFirstLetter(key)}: ` +
+            `${this.formatValue(value)}`;
+
+        }
+      );
 
     return formattedItem;
   }
+
+
+  // =====================================================
+  // DATENBANKSICHERUNG + MERSER
+  // =====================================================
 
   /**
    * Erstellt:
@@ -343,68 +605,118 @@ export class ListPersonComponent implements OnInit {
    * 2. die gefilterte Merser-Datei als .csv
    */
   backupDatabase(): void {
-    const now = new Date();
 
-    const day = String(now.getDate()).padStart(2, '0');
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const year = now.getFullYear();
+    const now =
+      new Date();
 
-    const dateKey = `${day}${month}${year}`;
+    const day =
+      String(
+        now.getDate()
+      ).padStart(
+        2,
+        '0'
+      );
 
-    this.http.get('/api/backupDatabase', {
-      responseType: 'blob'
-    }).subscribe({
-      next: (backupBlob: Blob) => {
-        // Vollständige Datenbanksicherung herunterladen
+    const month =
+      String(
+        now.getMonth() + 1
+      ).padStart(
+        2,
+        '0'
+      );
+
+    const year =
+      now.getFullYear();
+
+    const dateKey =
+      `${day}${month}${year}`;
+
+    this.http.get(
+      '/api/backupDatabase',
+      {
+        responseType: 'blob'
+      }
+    ).subscribe({
+
+      next: (
+        backupBlob: Blob
+      ) => {
+
+        // Vollständige Datenbanksicherung
         this.downloadFile(
           backupBlob,
           `NeueHeimat_Sicherung_${dateKey}.gz`
         );
 
-        // Personen für die zusätzliche Merser-CSV laden
-        this.personService.getAllPersons().subscribe({
-          next: (persons: any[]) => {
-            const merserContent =
-              this.generateMerserContent(persons || []);
+        // Personen für Merser laden
+        this.personService
+          .getAllPersons()
+          .subscribe({
 
-            if (!merserContent) {
-              alert(
-                'Die Datenbanksicherung wurde erstellt. ' +
-                'Es wurden jedoch keine Personen mit den vorgesehenen ' +
-                'Versorgungsordnungen und gültigen Rentendaten gefunden.'
+            next: (
+              persons: any[]
+            ) => {
+
+              const merserContent =
+                this.generateMerserContent(
+                  persons || []
+                );
+
+              if (
+                !merserContent
+              ) {
+
+                alert(
+                  'Die Datenbanksicherung wurde erstellt. ' +
+                  'Es wurden jedoch keine Personen mit den vorgesehenen ' +
+                  'Versorgungsordnungen und gültigen Rentendaten gefunden.'
+                );
+
+                return;
+              }
+
+              const csvBlob =
+                new Blob(
+                  [
+                    '\uFEFF' +
+                    merserContent
+                  ],
+                  {
+                    type:
+                      'text/csv;charset=utf-8'
+                  }
+                );
+
+              this.downloadFile(
+                csvBlob,
+                `NeueHeimat_Merser_${dateKey}.csv`
               );
 
-              return;
+            },
+
+            error: (
+              error: any
+            ) => {
+
+              console.error(
+                'Fehler beim Erstellen des Merser-Exports:',
+                error
+              );
+
+              alert(
+                'Die Datenbanksicherung wurde erstellt, ' +
+                'aber der Merser-Export konnte nicht erzeugt werden.'
+              );
+
             }
 
-            const csvBlob = new Blob(
-              ['\uFEFF' + merserContent],
-              {
-                type: 'text/csv;charset=utf-8'
-              }
-            );
-
-            this.downloadFile(
-              csvBlob,
-              `NeueHeimat_Merser_${dateKey}.csv`
-            );
-          },
-
-          error: (error: any) => {
-            console.error(
-              'Fehler beim Erstellen des Merser-Exports:',
-              error
-            );
-
-            alert(
-              'Die Datenbanksicherung wurde erstellt, ' +
-              'aber der Merser-Export konnte nicht erzeugt werden.'
-            );
-          }
-        });
+          });
       },
 
-      error: (error: any) => {
+      error: (
+        error: any
+      ) => {
+
         console.error(
           'Fehler beim Herunterladen der Datenbanksicherung:',
           error
@@ -413,9 +725,12 @@ export class ListPersonComponent implements OnInit {
         alert(
           'Die Datenbanksicherung konnte nicht heruntergeladen werden.'
         );
+
       }
+
     });
   }
+
 
   /**
    * Merser-Datei erzeugen.
@@ -425,184 +740,274 @@ export class ListPersonComponent implements OnInit {
    *
    * Je Person wird nur die aktuellste Rentenperiode verwendet.
    */
-  private generateMerserContent(persons: any[]): string {
+  private generateMerserContent(
+    persons: any[]
+  ): string {
+
     const lines: string[] = [];
 
-    const filteredPersons = persons.filter((person: any) => {
-      const versorgungsordnung =
-        Number(person?.versorgungsordnung);
+    const filteredPersons =
+      persons.filter(
+        (person: any) => {
 
-      return this.merserVersorgungsordnungen.includes(
-        versorgungsordnung
+          const versorgungsordnung =
+            Number(
+              person?.versorgungsordnung
+            );
+
+          return (
+            this.merserVersorgungsordnungen
+              .includes(
+                versorgungsordnung
+              )
+          );
+
+        }
       );
-    });
 
-    filteredPersons.forEach((person: any) => {
-      const latestRente =
-        this.getLatestRentenPeriode(person);
+    filteredPersons.forEach(
+      (person: any) => {
 
-      // Person ohne gültige Rentenperiode überspringen
-      if (!latestRente) {
-        return;
+        const latestRente =
+          this.getLatestRentenPeriode(
+            person
+          );
+
+        if (
+          !latestRente
+        ) {
+          return;
+        }
+
+        const values: string[] = [
+
+          this.formatInteger(
+            person.personalnummer
+          ),
+
+          this.formatMerserDate(
+            latestRente.gueltigVon
+          ),
+
+          this.formatMerserDate(
+            latestRente.eingabedatum
+          ),
+
+          this.formatMerserNumber(
+            latestRente.gesamtversorgung
+          ),
+
+          this.formatMerserNumber(
+            latestRente.gesetzlicheSVRente
+          ),
+
+          this.formatMerserNumber(
+            latestRente.renteAusBefrLebensvers
+          ),
+
+          this.formatMerserNumber(
+            latestRente.andereAnzurechnendeRente
+          ),
+
+          this.formatQuotedText(
+            latestRente.andereAnzurechnendeRenteName
+          ),
+
+          this.formatMerserNumber(
+            latestRente.zusatzrente
+          ),
+
+          this.formatQuotedText(
+            latestRente.zusatzrenteName
+          ),
+
+          this.formatMerserNumber(
+            latestRente.pension
+          ),
+
+          this.formatMerserNumber(
+            latestRente.ausgleich
+          ),
+
+          this.formatMerserNumber(
+            latestRente.betrRente
+          ),
+
+          this.formatInteger(
+            latestRente.bezugsart
+          ),
+
+          this.formatInteger(
+            latestRente.anpassungsschluessel
+          ),
+
+          this.formatInteger(
+            latestRente.weitereRenteUnterPersNr
+          ),
+
+          this.formatInteger(
+            latestRente.anzahlKinder
+          ),
+
+          this.formatInteger(
+            latestRente.steuerklasse
+          ),
+
+          this.formatQuotedText(
+            latestRente.krankenkassenkennziffer
+          ),
+
+          this.formatMerserNumber(
+            latestRente.beitragFuerKrankenvers
+          ),
+
+          this.formatMerserNumber(
+            latestRente.entgeltpunkte
+          ),
+
+          this.formatMerserNumber(
+            latestRente.zugangsfaktor
+          ),
+
+          this.formatMerserNumber(
+            latestRente.rentenartfaktor
+          ),
+
+          this.formatMerserNumber(
+            latestRente.teilrentenfaktor
+          )
+
+        ];
+
+        lines.push(
+          values.join(' ')
+        );
+
       }
+    );
 
-      const values: string[] = [
-        this.formatInteger(person.personalnummer),
-
-        this.formatMerserDate(latestRente.gueltigVon),
-        this.formatMerserDate(latestRente.eingabedatum),
-
-        this.formatMerserNumber(
-          latestRente.gesamtversorgung
-        ),
-
-        this.formatMerserNumber(
-          latestRente.gesetzlicheSVRente
-        ),
-
-        this.formatMerserNumber(
-          latestRente.renteAusBefrLebensvers
-        ),
-
-        this.formatMerserNumber(
-          latestRente.andereAnzurechnendeRente
-        ),
-
-        this.formatQuotedText(
-          latestRente.andereAnzurechnendeRenteName
-        ),
-
-        this.formatMerserNumber(
-          latestRente.zusatzrente
-        ),
-
-        this.formatQuotedText(
-          latestRente.zusatzrenteName
-        ),
-
-        this.formatMerserNumber(
-          latestRente.pension
-        ),
-
-        this.formatMerserNumber(
-          latestRente.ausgleich
-        ),
-
-        this.formatMerserNumber(
-          latestRente.betrRente
-        ),
-
-        this.formatInteger(
-          latestRente.bezugsart
-        ),
-
-        this.formatInteger(
-          latestRente.anpassungsschluessel
-        ),
-
-        this.formatInteger(
-          latestRente.weitereRenteUnterPersNr
-        ),
-
-        this.formatInteger(
-          latestRente.anzahlKinder
-        ),
-
-        this.formatInteger(
-          latestRente.steuerklasse
-        ),
-
-        this.formatQuotedText(
-          latestRente.krankenkassenkennziffer
-        ),
-
-        this.formatMerserNumber(
-          latestRente.beitragFuerKrankenvers
-        ),
-
-        this.formatMerserNumber(
-          latestRente.entgeltpunkte
-        ),
-
-        this.formatMerserNumber(
-          latestRente.zugangsfaktor
-        ),
-
-        this.formatMerserNumber(
-          latestRente.rentenartfaktor
-        ),
-
-        this.formatMerserNumber(
-          latestRente.teilrentenfaktor
-        )
-      ];
-
-      lines.push(values.join(' '));
-    });
-
-    return lines.join('\r\n');
+    return lines.join(
+      '\r\n'
+    );
   }
+
 
   /**
    * Liefert die Periode mit dem neuesten gueltigVon.
    */
-  private getLatestRentenPeriode(person: any): any | null {
+  private getLatestRentenPeriode(
+    person: any
+  ): any | null {
+
     const rentenArray =
-      person?.datenbzglderlaufendenRente || [];
+      person
+        ?.datenbzglderlaufendenRente
+      || [];
 
-    const validEntries = rentenArray.filter(
-      (entry: any) => {
-        if (!entry?.gueltigVon) {
-          return false;
+    const validEntries =
+      rentenArray.filter(
+        (entry: any) => {
+
+          if (
+            !entry?.gueltigVon
+          ) {
+            return false;
+          }
+
+          const date =
+            new Date(
+              entry.gueltigVon
+            );
+
+          return (
+            !isNaN(
+              date.getTime()
+            )
+          );
+
         }
+      );
 
-        const date = new Date(entry.gueltigVon);
-
-        return !isNaN(date.getTime());
-      }
-    );
-
-    if (validEntries.length === 0) {
+    if (
+      validEntries.length === 0
+    ) {
       return null;
     }
 
-    return [...validEntries].sort(
-      (a: any, b: any) => {
+    return [
+      ...validEntries
+    ].sort(
+      (
+        a: any,
+        b: any
+      ) => {
+
         const dateA =
-          new Date(a.gueltigVon).getTime();
+          new Date(
+            a.gueltigVon
+          ).getTime();
 
         const dateB =
-          new Date(b.gueltigVon).getTime();
+          new Date(
+            b.gueltigVon
+          ).getTime();
 
         return dateB - dateA;
+
       }
     )[0];
   }
 
+
   /**
-   * Ausgabe beispielsweise: 01/10/2025
+   * Ausgabe beispielsweise:
+   * 01/10/2025
    */
-  private formatMerserDate(value: any): string {
-    if (!value) {
+  private formatMerserDate(
+    value: any
+  ): string {
+
+    if (
+      !value
+    ) {
       return '';
     }
 
-    const date = new Date(value);
+    const date =
+      new Date(value);
 
-    if (isNaN(date.getTime())) {
+    if (
+      isNaN(
+        date.getTime()
+      )
+    ) {
       return '';
     }
 
     const day =
-      String(date.getUTCDate()).padStart(2, '0');
+      String(
+        date.getUTCDate()
+      ).padStart(
+        2,
+        '0'
+      );
 
     const month =
-      String(date.getUTCMonth() + 1).padStart(2, '0');
+      String(
+        date.getUTCMonth() + 1
+      ).padStart(
+        2,
+        '0'
+      );
 
-    const year = date.getUTCFullYear();
+    const year =
+      date.getUTCFullYear();
 
-    return `${day}/${month}/${year}`;
+    return (
+      `${day}/${month}/${year}`
+    );
   }
+
 
   /**
    * Ausgabe beispielsweise:
@@ -610,7 +1015,10 @@ export class ListPersonComponent implements OnInit {
    * 107,34
    * 0
    */
-  private formatMerserNumber(value: any): string {
+  private formatMerserNumber(
+    value: any
+  ): string {
+
     if (
       value === null ||
       value === undefined ||
@@ -619,45 +1027,96 @@ export class ListPersonComponent implements OnInit {
       return '0';
     }
 
-    let normalizedValue = value;
+    let normalizedValue =
+      value;
 
-    if (typeof normalizedValue === 'string') {
-      normalizedValue = normalizedValue.trim();
+    if (
+      typeof normalizedValue
+        === 'string'
+    ) {
+
+      normalizedValue =
+        normalizedValue.trim();
 
       if (
         normalizedValue.includes(',') &&
         normalizedValue.includes('.')
       ) {
-        normalizedValue = normalizedValue
-          .replace(/\./g, '')
-          .replace(',', '.');
-      } else if (normalizedValue.includes(',')) {
+
         normalizedValue =
-          normalizedValue.replace(',', '.');
+          normalizedValue
+            .replace(
+              /\./g,
+              ''
+            )
+            .replace(
+              ',',
+              '.'
+            );
+
+      } else if (
+        normalizedValue.includes(',')
+      ) {
+
+        normalizedValue =
+          normalizedValue
+            .replace(
+              ',',
+              '.'
+            );
+
       }
     }
 
-    const numberValue = Number(normalizedValue);
+    const numberValue =
+      Number(
+        normalizedValue
+      );
 
-    if (!Number.isFinite(numberValue)) {
+    if (
+      !Number.isFinite(
+        numberValue
+      )
+    ) {
       return '0';
     }
 
-    if (Number.isInteger(numberValue)) {
-      return String(numberValue);
+    if (
+      Number.isInteger(
+        numberValue
+      )
+    ) {
+
+      return String(
+        numberValue
+      );
     }
 
     return numberValue
       .toFixed(4)
-      .replace(/0+$/, '')
-      .replace(/\.$/, '')
-      .replace('.', ',');
+      .replace(
+        /0+$/,
+        ''
+      )
+      .replace(
+        /\.$/,
+        ''
+      )
+      .replace(
+        '.',
+        ','
+      );
   }
 
+
   /**
-   * Für Personalnummer, Bezugsart, Anpassungsschlüssel usw.
+   * Für Personalnummer, Bezugsart,
+   * Anpassungsschlüssel usw.
    */
-  private formatInteger(value: any): string {
+  private formatInteger(
+    value: any
+  ): string {
+
     if (
       value === null ||
       value === undefined ||
@@ -666,21 +1125,34 @@ export class ListPersonComponent implements OnInit {
       return '0';
     }
 
-    const numberValue = Number(value);
+    const numberValue =
+      Number(value);
 
-    if (!Number.isFinite(numberValue)) {
+    if (
+      !Number.isFinite(
+        numberValue
+      )
+    ) {
       return '0';
     }
 
-    return String(Math.trunc(numberValue));
+    return String(
+      Math.trunc(
+        numberValue
+      )
+    );
   }
+
 
   /**
    * Ausgabe beispielsweise:
    * ""
    * "0472"
    */
-  private formatQuotedText(value: any): string {
+  private formatQuotedText(
+    value: any
+  ): string {
+
     if (
       value === null ||
       value === undefined ||
@@ -689,142 +1161,277 @@ export class ListPersonComponent implements OnInit {
       return '""';
     }
 
-    const text = String(value)
-      .trim()
-      .replace(/"/g, '""');
+    const text =
+      String(value)
+        .trim()
+        .replace(
+          /"/g,
+          '""'
+        );
 
     return `"${text}"`;
   }
+
+
+  // =====================================================
+  // DATEI HERUNTERLADEN
+  // =====================================================
 
   private downloadFile(
     blob: Blob,
     fileName: string
   ): void {
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
 
-    link.href = url;
-    link.download = fileName;
+    const url =
+      window.URL
+        .createObjectURL(
+          blob
+        );
 
-    document.body.appendChild(link);
+    const link =
+      document.createElement(
+        'a'
+      );
+
+    link.href =
+      url;
+
+    link.download =
+      fileName;
+
+    document.body
+      .appendChild(
+        link
+      );
+
     link.click();
-    document.body.removeChild(link);
 
-    window.URL.revokeObjectURL(url);
+    document.body
+      .removeChild(
+        link
+      );
+
+    window.URL
+      .revokeObjectURL(
+        url
+      );
   }
 
-  private convertToCsv(data: any[]): string {
+
+  // =====================================================
+  // CSV
+  // =====================================================
+
+  private convertToCsv(
+    data: any[]
+  ): string {
+
     return Papa.unparse({
+
       fields: [
         'Name',
         'Personalnummer'
       ],
 
-      data: data.map((person: any) => ({
-        Name: person.name || '',
-        Personalnummer: person.personalnummer || ''
-      }))
+      data: data.map(
+        (person: any) => ({
+
+          Name:
+            person.name || '',
+
+          Personalnummer:
+            person.personalnummer || ''
+
+        })
+      )
+
     });
   }
+
+
+  // =====================================================
+  // AKTIVE PERSONEN EXPORTIEREN
+  // =====================================================
 
   exportActivePersonsToCsv(): void {
-    this.personService.getAllPersons().subscribe({
-      next: (persons: any[]) => {
-        const activePersons = persons.filter(
-          (person: any) => {
-            const status = String(
-              person.aktuelleStatusgruppe || ''
-            ).toLowerCase();
 
-            return !status.startsWith('verst');
-          }
-        );
+    this.personService
+      .getAllPersons()
+      .subscribe({
 
-        const csvData =
-          this.convertToCsv(activePersons);
+        next: (
+          persons: any[]
+        ) => {
 
-        const blob = new Blob(
-          [csvData],
-          {
-            type: 'text/csv;charset=utf-8'
-          }
-        );
+          const activePersons =
+            persons.filter(
+              (person: any) => {
 
-        const now = new Date();
+                const status =
+                  String(
+                    person
+                      .aktuelleStatusgruppe
+                    || ''
+                  ).toLowerCase();
 
-        const day =
-          String(now.getDate()).padStart(2, '0');
+                return (
+                  !status.startsWith(
+                    'verst'
+                  )
+                );
 
-        const month =
-          String(now.getMonth() + 1).padStart(2, '0');
+              }
+            );
 
-        const year = now.getFullYear();
+          const csvData =
+            this.convertToCsv(
+              activePersons
+            );
 
-        saveAs(
-          blob,
-          `Aktive_Rentner_${day}${month}${year}.csv`
-        );
-      },
+          const blob =
+            new Blob(
+              [csvData],
+              {
+                type:
+                  'text/csv;charset=utf-8'
+              }
+            );
 
-      error: (error: any) => {
-        console.error(
-          'Error fetching persons:',
-          error
-        );
-      }
-    });
+          const now =
+            new Date();
+
+          const day =
+            String(
+              now.getDate()
+            ).padStart(
+              2,
+              '0'
+            );
+
+          const month =
+            String(
+              now.getMonth() + 1
+            ).padStart(
+              2,
+              '0'
+            );
+
+          const year =
+            now.getFullYear();
+
+          saveAs(
+            blob,
+            `Aktive_Rentner_${day}${month}${year}.csv`
+          );
+
+        },
+
+        error: (
+          error: any
+        ) => {
+
+          console.error(
+            'Error fetching persons:',
+            error
+          );
+
+        }
+
+      });
   }
+
+
+  // =====================================================
+  // VERSTORBENE PERSONEN EXPORTIEREN
+  // =====================================================
 
   exportDeceasedPersonsToCsv(): void {
-    this.personService.getAllPersons().subscribe({
-      next: (persons: any[]) => {
-        const deceasedPersons = persons.filter(
-          (person: any) => {
-            const status = String(
-              person.aktuelleStatusgruppe || ''
-            ).toLowerCase();
 
-            return status.startsWith('verst');
-          }
-        );
+    this.personService
+      .getAllPersons()
+      .subscribe({
 
-        const csvData =
-          this.convertToCsv(deceasedPersons);
+        next: (
+          persons: any[]
+        ) => {
 
-        const blob = new Blob(
-          [csvData],
-          {
-            type: 'text/csv;charset=utf-8'
-          }
-        );
+          const deceasedPersons =
+            persons.filter(
+              (person: any) => {
 
-        const now = new Date();
+                const status =
+                  String(
+                    person
+                      .aktuelleStatusgruppe
+                    || ''
+                  ).toLowerCase();
 
-        const day =
-          String(now.getDate()).padStart(2, '0');
+                return (
+                  status.startsWith(
+                    'verst'
+                  )
+                );
 
-        const month =
-          String(now.getMonth() + 1).padStart(2, '0');
+              }
+            );
 
-        const year = now.getFullYear();
+          const csvData =
+            this.convertToCsv(
+              deceasedPersons
+            );
 
-        saveAs(
-          blob,
-          `Verstorbene_${day}${month}${year}.csv`
-        );
-      },
+          const blob =
+            new Blob(
+              [csvData],
+              {
+                type:
+                  'text/csv;charset=utf-8'
+              }
+            );
 
-      error: (error: any) => {
-        console.error(
-          'Error fetching persons:',
-          error
-        );
-      }
-    });
+          const now =
+            new Date();
+
+          const day =
+            String(
+              now.getDate()
+            ).padStart(
+              2,
+              '0'
+            );
+
+          const month =
+            String(
+              now.getMonth() + 1
+            ).padStart(
+              2,
+              '0'
+            );
+
+          const year =
+            now.getFullYear();
+
+          saveAs(
+            blob,
+            `Verstorbene_${day}${month}${year}.csv`
+          );
+
+        },
+
+        error: (
+          error: any
+        ) => {
+
+          console.error(
+            'Error fetching persons:',
+            error
+          );
+
+        }
+
+      });
   }
+
 }
-
-  
-
   
 

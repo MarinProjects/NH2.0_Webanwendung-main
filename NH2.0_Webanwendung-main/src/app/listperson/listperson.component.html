@@ -1,69 +1,130 @@
-<!--
-<h2>Personenliste. Hier befinden sich alle Personen in der Datenbank.</h2>
+<h2 class="title">
+  Personenliste. Hier befinden sich alle Personen in der Datenbank Neue_Heimat 2.0.
+</h2>
 
 
-<button (click)="navigateToCreatePerson()">Personenstammsatz hinzufügen</button>
+<!-- ===================================================== -->
+<!-- ADMIN + READONLY -->
+<!-- ===================================================== -->
 
-<div>
-  <label for="searchPersonalnummer">Personalnummer: </label>
-  <input type="text" id="searchPersonalnummer" name="searchPersonalnummer" [(ngModel)]="personalnummerSearch">
-  <button (click)="searchByPersonalnummer()">Suchen</button>
-</div>
+<button
+  class="add-button"
+  (click)="navigateToActivePensioners()"
+>
+  Aktive Rentner anzeigen
+</button>
 
+<button
+  class="add-button"
+  (click)="exportAllPersonsToTxt()"
+>
+  Gesamten Rentnerstammsatz exportieren
+</button>
 
-<br>
-<br>
+<button
+  class="add-button"
+  (click)="exportActivePersonsToCsv()"
+>
+  Aktiven Rentnerstammsatz exportieren
+</button>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Personalnummer</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let person of persons" (dblclick)="showPersonDetail(person._id)">
-      <td>{{ person.name }}</td>
-      <td>{{ person.personalnummer }}</td>
-    </tr>
-  </tbody>
-</table>
--->
+<button
+  class="add-button"
+  (click)="exportDeceasedPersonsToCsv()"
+>
+  Inaktiven (verstorbene) Rentnerstammsatz exportieren
+</button>
 
-<h2 class="title">Personenliste. Hier befinden sich alle Personen in der Datenbank Neue_Heimat 2.0.</h2>
+<button
+  class="add-button"
+  (click)="exportRGOPersons()"
+>
+  RGO Personen exportieren
+</button>
 
-
-  <button class="add-button" (click)="navigateToActivePensioners()">Aktive Rentner anzeigen</button>
-
-
-  <button class="add-button" (click)="navigateToCreatePerson()">Personenstammsatz hinzufügen</button>
-
-  <button class="add-button" (click)="exportAllPersonsToTxt()">Gesamten Rentnerstammsatz exportieren</button>
-  <button class="add-button" (click)="exportActivePersonsToCsv()">Aktiven Rentnerstammsatz exportieren</button>
-  <button class="add-button" (click)="exportDeceasedPersonsToCsv()">Inaktiven (verstorbene) Rentnerstammsatz exportieren</button>
-  <button class="add-button" (click)="exportRGOPersons()">RGO Personen exportieren</button>
-  <button class="add-button" (click)="exportImportFile()">Import generieren</button>
-
-  <button class="add-button" (click)="navigateToPVAnpassung()">Anpassungsberechnung Pensionsverordnung</button>
-
-  <button class="add-button" (click)="navigateToRGOHalbjahr1()">RGO Halbjahr 1</button>
-  <button class="add-button" (click)="navigateToRGOSerienbriefH1()">RGO Halbjahr 1 Serienbriefe</button>
-  
-  
-  <button class="add-button" (click)="navigateToRGOHalfYear2()">RGO Halbjahr 2</button>
-  <button class="add-button" (click)="navigateToRGOHalfYear2Letters()">RGO Halbjahr 2 Serienbriefe</button>
-
-  <button class="add-button" (click)="navigateToSolvenius()">Übergabe an Solvenius</button>
-
-  <button class="add-button" (click)="backupDatabase()" >Datenbanksicherung & Übergabe an Merser</button>
+<button
+  class="add-button"
+  (click)="exportImportFile()"
+>
+  Import generieren
+</button>
 
 
+<!-- ===================================================== -->
+<!-- NUR ADMIN -->
+<!-- ===================================================== -->
+
+<ng-container *ngIf="isAdmin">
+
+  <button
+    class="add-button"
+    (click)="navigateToCreatePerson()"
+  >
+    Personenstammsatz hinzufügen
+  </button>
+
+  <button
+    class="add-button"
+    (click)="navigateToPVAnpassung()"
+  >
+    Anpassungsberechnung Pensionsverordnung
+  </button>
+
+  <button
+    class="add-button"
+    (click)="navigateToRGOHalbjahr1()"
+  >
+    RGO Halbjahr 1
+  </button>
+
+  <button
+    class="add-button"
+    (click)="navigateToRGOSerienbriefH1()"
+  >
+    RGO Halbjahr 1 Serienbriefe
+  </button>
+
+  <button
+    class="add-button"
+    (click)="navigateToRGOHalfYear2()"
+  >
+    RGO Halbjahr 2
+  </button>
+
+  <button
+    class="add-button"
+    (click)="navigateToRGOHalfYear2Letters()"
+  >
+    RGO Halbjahr 2 Serienbriefe
+  </button>
+
+  <button
+    class="add-button"
+    (click)="navigateToSolvenius()"
+  >
+    Übergabe an Solvenius
+  </button>
+
+  <button
+    class="add-button"
+    (click)="backupDatabase()"
+  >
+    Datenbanksicherung & Übergabe an Merser
+  </button>
+
+</ng-container>
 
 
+<!-- ===================================================== -->
+<!-- SUCHE -->
+<!-- ADMIN + READONLY -->
+<!-- ===================================================== -->
 
- <div class="search-container">
+<div class="search-container">
 
-  <label>Personalnummer:</label>
+  <label>
+    Personalnummer:
+  </label>
 
   <input
     type="text"
@@ -98,19 +159,36 @@
 
 </div>
 
-  <table class="person-table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Personalnummer</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let person of persons" (dblclick)="showPersonDetail(person._id)">
-        <td>{{ person.name }}</td>
-        
-        <td>{{ person.personalnummer }}</td>
-      </tr>
-    </tbody>
-  </table>
 
+<!-- ===================================================== -->
+<!-- PERSONENLISTE -->
+<!-- ADMIN + READONLY -->
+<!-- ===================================================== -->
+
+<table class="person-table">
+
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Personalnummer</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr
+      *ngFor="let person of persons"
+      (dblclick)="showPersonDetail(person._id)"
+    >
+      <td>
+        {{ person.name }}
+      </td>
+
+      <td>
+        {{ person.personalnummer }}
+      </td>
+    </tr>
+
+  </tbody>
+
+</table>

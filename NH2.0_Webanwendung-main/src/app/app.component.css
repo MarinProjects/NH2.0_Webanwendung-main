@@ -1,0 +1,33 @@
+.app-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  padding: 12px 20px;
+
+  border-bottom: 1px solid #dcdcdc;
+  background-color: #f7f7f7;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  font-size: 14px;
+}
+
+.logout-button {
+  padding: 7px 14px;
+
+  border: 1px solid #999;
+  border-radius: 4px;
+
+  background-color: white;
+
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #eeeeee;
+}
